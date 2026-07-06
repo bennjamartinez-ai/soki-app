@@ -8,8 +8,6 @@ import Orders from "./pages/Orders";
 import Purchases from "./pages/Purchases";
 import Sales from "./pages/Sales";
 import Statistics from "./pages/Statistics";
-import Settings from "./pages/Settings";
-
 import { InventoryProvider } from "./context/InventoryContext";
 
 function App() {
@@ -58,11 +56,7 @@ function App() {
                 element={<Statistics />}
               />
 
-              <Route
-                path="/settings"
-                element={<Settings />}
-              />
-
+          
             </Routes>
 
           </main>
