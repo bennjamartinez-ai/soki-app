@@ -160,7 +160,7 @@ function handleConfirmPurchase() {
         setPurchase={setPurchase}
       />
 
-      <PurchaseSummary
+          <PurchaseSummary
       purchase={purchase}
       onConfirm={handleConfirmPurchase}
     />

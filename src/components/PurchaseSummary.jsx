@@ -1,12 +1,12 @@
 export default function PurchaseSummary({
   purchase,
+  onConfirm,
 }) {
     const merchandiseTotal = purchase.items.reduce(
   (sum, item) => sum + item.quantity * item.cost,
   0
 );
 
-const onConfirm = () => {};
   const totalUnits = purchase.items.reduce(
     (sum, item) => sum + item.quantity,
     0
@@ -86,14 +86,13 @@ const onConfirm = () => {};
 
       </div>
 
-      <button
-        onClick={onConfirm}
-        className="mt-8 w-full rounded-xl bg-green-500 py-3 font-semibold hover:bg-green-600"
-      >
-        Confirmar compra
-      </button>
-
-    </div>
+            <button
+      onClick={onConfirm}
+      className="mt-8 w-full rounded-xl bg-green-500 py-3 font-semibold hover:bg-green-600"
+    >
+      Confirmar compra
+    </button>
+        </div>
 
   );
 
