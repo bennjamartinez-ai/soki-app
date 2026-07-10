@@ -92,20 +92,17 @@ function removeItem(id) {
                 <td className="text-center">
 
                   <input
-                    type="number"
-                    min={1}
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateQuantity(
-                        item.id,
-                        Number(e.target.value)
-                      )
-                    }
-<<<<<<< HEAD
-                className="w-16 rounded-lg bg-zinc-800 p-2 text-center text-sm md:w-20"                  />
-=======
-className="w-16 rounded-lg bg-zinc-800 p-2 text-center text-sm md:w-20"                  />
->>>>>>> 35f281c4749e694493b0e8997178c8a897ea114f
+  type="number"
+  min={1}
+  value={item.quantity}
+  onChange={(e) =>
+    updateQuantity(
+      item.id,
+      Number(e.target.value)
+    )
+  }
+  className="w-16 rounded-lg bg-zinc-800 p-2 text-center text-sm md:w-20"
+/>
 
                 </td>
 
