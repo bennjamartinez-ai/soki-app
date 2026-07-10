@@ -83,8 +83,7 @@ export default function Products() {
   return (
     <div className="space-y-8">
 
-      <div className="flex items-center justify-between">
-
+<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
 
           <h1 className="text-3xl font-bold">
@@ -102,16 +101,14 @@ export default function Products() {
             setEditingProduct(null);
             setIsModalOpen(true);
           }}
-          className="flex items-center gap-2 rounded-xl bg-amber-200 px-5 py-3 font-semibold text-black transition hover:bg-amber-300"
-        >
+className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200 px-5 py-3 font-semibold text-black transition hover:bg-amber-300 md:w-auto"        >
           <Plus size={18} />
           Nuevo Producto
         </button>
 
       </div>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard title="Productos" value={totalProducts} />
 
         <StatCard
@@ -128,10 +125,8 @@ export default function Products() {
 
       </div>
 
-      <div className="flex items-center justify-between gap-4">
-
-        <div className="relative max-w-md flex-1">
-
+<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+<div className="relative w-full md:max-w-md md:flex-1">
           <Search
             size={18}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -149,8 +144,7 @@ export default function Products() {
 
         <button
           onClick={() => setIsCategoryModalOpen(true)}
-          className="flex items-center gap-2 rounded-xl bg-zinc-800 px-5 py-3 font-semibold text-white transition hover:bg-amber-200 hover:text-black"
-        >
+className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 px-5 py-3 font-semibold text-white transition hover:bg-amber-200 hover:text-black md:w-auto"        >
           📂 Categorías
         </button>
 

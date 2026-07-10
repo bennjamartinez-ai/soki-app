@@ -87,11 +87,11 @@ export default function Sidebar() {
 
 </div>
 
-      <nav
-  className={`${
-    collapsed ? "space-y-4" : "space-y-2"
-  }`}
->
+          <nav
+      className={`${
+        collapsed ? "space-y-4" : "space-y-2"
+      }`}
+    >
 
         {menu.map((item) => {
 

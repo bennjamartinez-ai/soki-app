@@ -24,14 +24,11 @@ export default function PurchaseSummary({
 
   return (
 
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-
-      <h2 className="mb-6 text-2xl font-bold">
-        Resumen
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:p-6">
+      <h2 className="mb-4 text-xl font-bold md:mb-6 md:text-2xl">        Resumen
       </h2>
 
-      <div className="space-y-3">
-
+      <div className="space-y-2 md:space-y-3">
         <div className="flex justify-between">
           <span>Productos</span>
           <span>{purchase.items.length}</span>
@@ -74,8 +71,7 @@ export default function PurchaseSummary({
 
         <hr className="border-zinc-700"/>
 
-        <div className="flex justify-between text-2xl font-bold">
-
+<div className="flex items-center justify-between text-xl font-bold md:text-2xl">
           <span>Total</span>
 
           <span className="text-green-400">
@@ -88,8 +84,7 @@ export default function PurchaseSummary({
 
             <button
       onClick={onConfirm}
-      className="mt-8 w-full rounded-xl bg-green-500 py-3 font-semibold hover:bg-green-600"
-    >
+className="mt-6 w-full rounded-xl bg-green-500 py-3 text-base font-semibold transition hover:bg-green-600 md:mt-8 md:py-4 md:text-lg"    >
       Confirmar compra
     </button>
         </div>

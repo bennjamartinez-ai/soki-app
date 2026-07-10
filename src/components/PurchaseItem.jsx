@@ -5,7 +5,9 @@ export default function PurchaseItem({
   onIncrease,
   onDecrease,
   onRemove,
-}) {
+  onCostChange,
+}) 
+{
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-800 p-4">
 
@@ -63,7 +65,7 @@ export default function PurchaseItem({
     type="number"
     value={item.cost ?? 0}
     onChange={(e) =>
-      onCostChange(
+      updateCost(
         item.id,
         Number(e.target.value)
       )

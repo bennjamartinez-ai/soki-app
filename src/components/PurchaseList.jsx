@@ -35,9 +35,8 @@ function removeItem(id) {
   }));
 }
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-
-      <h2 className="mb-5 text-2xl font-bold">
+<div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:p-6">
+      <h2 className="mb-4 text-xl font-bold md:mb-5 md:text-2xl">
         Pedido
       </h2>
 
@@ -102,8 +101,7 @@ function removeItem(id) {
                         Number(e.target.value)
                       )
                     }
-                    className="w-20 rounded-lg bg-zinc-800 p-2 text-center"
-                  />
+                className="w-16 rounded-lg bg-zinc-800 p-2 text-center text-sm md:w-20"                  />
 
                 </td>
 
@@ -118,8 +116,7 @@ function removeItem(id) {
                         Number(e.target.value)
                       )
                     }
-                    className="w-24 rounded-lg bg-zinc-800 p-2 text-center"
-                  />
+                    className="w-20 rounded-lg bg-zinc-800 p-2 text-center text-sm md:w-24"                   />
 
                 </td>
 
@@ -147,7 +144,7 @@ function removeItem(id) {
 
           </tbody>
 
-        </table>
+         </table>
 
       )}
 
