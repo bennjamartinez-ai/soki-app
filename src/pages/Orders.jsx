@@ -189,6 +189,7 @@ export default function Orders() {
     id: Date.now(),
     createdAt: Date.now(),
     date: new Date().toLocaleString(),
+    status: "completed",
     items: cart,
     subtotal,
     shipping,
@@ -207,12 +208,13 @@ export default function Orders() {
       "Venta registrada correctamente."
     );
 
-  }  return (
-    <div className="grid grid-cols-12 gap-6">
+  } 
+   return (
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
 
       {/* IZQUIERDA */}
 
-      <div className="col-span-7">
+      <div className="xl:col-span-7">
 
         <h1 className="mb-6 text-3xl font-bold">
           Nueva Venta
@@ -234,7 +236,7 @@ export default function Orders() {
 
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
           {filteredProducts.map((product) => (
 
@@ -252,9 +254,9 @@ export default function Orders() {
 
       {/* DERECHA */}
 
-      <div className="col-span-5">
+      <div className="xl:col-span-5">
 
-        <div className="sticky top-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:p-6 xl:sticky xl:top-8">
 
           <h2 className="mb-6 text-2xl font-bold">
             Presupuesto
