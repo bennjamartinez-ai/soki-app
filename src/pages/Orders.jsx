@@ -259,7 +259,7 @@ export default function Orders() {
         <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:p-6 xl:sticky xl:top-8">
 
           <h2 className="mb-6 text-2xl font-bold">
-            Presupuesto
+            PRESUPUESTO
           </h2>
 
           <div className="space-y-3">
@@ -292,7 +292,7 @@ export default function Orders() {
 
           </div>
 
-          <div className="mt-6 border-t border-zinc-800 pt-6 space-y-4">
+          <div className="mt-6 space-y-4 border-t border-zinc-800 pt-6">
 
             <div className="flex justify-between">
 
@@ -336,15 +336,17 @@ export default function Orders() {
 
             <div className="border-t border-zinc-800 pt-4">
 
-              <div className="flex justify-between text-2xl font-bold">
+              <div className="flex items-center justify-between">
 
-                <span>Total</span>
+            <span className="text-lg font-bold md:text-2xl">
+              Total
+            </span>
 
-                <span className="text-amber-200">
-                  ${total.toLocaleString()}
-                </span>
+            <span className="text-xl font-bold text-amber-200 md:text-3xl">
+              ${total.toLocaleString()}
+            </span>
 
-              </div>
+          </div>
 
             </div>
 
@@ -352,7 +354,7 @@ export default function Orders() {
 
           <button
             onClick={handleConfirmSale}
-            className="mt-6 w-full rounded-xl bg-amber-200 py-3 font-semibold text-black transition hover:bg-amber-300"
+            className="mt-6 w-full rounded-xl bg-amber-200 py-3 text-base font-semibold text-black transition hover:bg-amber-300 md:py-4 md:text-lg"
           >
             Confirmar Venta
           </button>
