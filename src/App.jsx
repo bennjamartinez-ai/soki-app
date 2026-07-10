@@ -15,13 +15,15 @@ function App() {
     <InventoryProvider>
       <BrowserRouter>
 
-        <div className="flex min-h-screen bg-zinc-950 text-white">
+        <div className="min-h-screen bg-zinc-950 text-white">
 
-          <Sidebar />
+        <div className="flex">
 
-          <main className="flex-1 p-8">
+        <Sidebar />
 
-            <Routes>
+       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-x-auto">
+
+      <Routes>
 
               <Route
                 path="/"
@@ -59,11 +61,13 @@ function App() {
           
             </Routes>
 
-          </main>
+              </main>
+
+          </div>
 
         </div>
 
-      </BrowserRouter>
+    </BrowserRouter>
     </InventoryProvider>
   );
 }
