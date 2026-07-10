@@ -5,29 +5,33 @@ export default function Dashboard() {
 
   const { products, sales } = useInventory();
 
+  const completedSales = sales.filter(
+  (sale) => sale.status !== "cancelled"
+);
+
   const today = new Date();
 
   const day = today.getDay();
 
-  // Lunes = inicio de semana
   const monday = new Date(today);
   monday.setDate(today.getDate() - (day === 0 ? 6 : day - 1));
   monday.setHours(0, 0, 0, 0);
 
-  // Domingo = fin de semana
   const sunday = new Date(monday);
   sunday.setDate(monday.getDate() + 6);
   sunday.setHours(23, 59, 59, 999);
 
-  const weeklySales = sales.filter((sale) => 
-  sale.status === "completed"
-).filter((sale)=>{
+  console.log("Hoy:", today);
+console.log("Lunes:", monday);
+console.log("Domingo:", sunday);
+
+  const weeklySales = completedSales.filter((sale) => {
     const date = new Date(sale.createdAt);
     return date >= monday && date <= sunday;
   });
 
   const weeklyIncome = weeklySales.reduce(
-    (total, sale) => total + sale.total,
+    (total, sale) => total + (sale.total ?? sale.subtotal ?? 0),
     0
   );
 

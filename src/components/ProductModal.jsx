@@ -1,5 +1,5 @@
+import { useInventory } from "../context/InventoryContext";
 import { useEffect, useState } from "react";
-import categories from "../data/categories";
 
 export default function ProductModal({
   isOpen,
@@ -7,8 +7,9 @@ export default function ProductModal({
   onSave,
   product,
 }) {
+  const { categories } = useInventory();
   const [name, setName] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState("");
   const [cost, setCost] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -21,12 +22,12 @@ export default function ProductModal({
       setPrice(product.price);
       setStock(product.stock);
     } else {
-      setName("");
-      setCategory(categories[0]);
-      setCost("");
-      setPrice("");
-      setStock("");
-    }
+  setName("");
+  setCategory(categories[0] || "");
+  setCost("");
+  setPrice("");
+  setStock("");
+}
   }, [product, isOpen]);
 
   if (!isOpen) return null;
