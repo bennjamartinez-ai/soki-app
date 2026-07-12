@@ -1,9 +1,9 @@
 import { useState } from "react";
-
 import { Eye } from "lucide-react";
-
 import { useInventory } from "../context/InventoryContext";
 import SaleDetailModal from "../components/SaleDetailModal";
+import { toast } from "react-hot-toast";
+import ConfirmModal from "../components/ConfirmModal";
 
 export default function Sales() {
 
@@ -16,6 +16,7 @@ export default function Sales() {
 
   const [selectedSale, setSelectedSale] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+const [saleToCancel, setSaleToCancel] = useState(null);
 
   function handleOpenSale(sale) {
     setSelectedSale(sale);
@@ -27,17 +28,19 @@ export default function Sales() {
     setIsModalOpen(false);
   }
 
-  function handleCancelSale(sale) {
-
+ function handleCancelSale(sale) {
   if (sale.status === "cancelled") return;
 
-  if (!confirm("¿Deseás anular esta venta?")) return;
+  setSaleToCancel(sale);
+}
+
+function confirmCancelSale() {
+  if (!saleToCancel) return;
 
   // Devolver stock
   setProducts((prev) =>
     prev.map((product) => {
-
-      const sold = sale.items.find(
+      const sold = saleToCancel.items.find(
         (item) => item.id === product.id
       );
 
@@ -47,14 +50,13 @@ export default function Sales() {
         ...product,
         stock: product.stock + sold.quantity,
       };
-
     })
   );
 
   // Cambiar estado de la venta
   setSales((prev) =>
     prev.map((item) =>
-      item.id === sale.id
+      item.id === saleToCancel.id
         ? {
             ...item,
             status: "cancelled",
@@ -63,7 +65,9 @@ export default function Sales() {
     )
   );
 
-  alert("Venta anulada correctamente.");
+  toast.success("Venta anulada correctamente.");
+
+  setSaleToCancel(null);
 }
 
   return (
@@ -169,6 +173,13 @@ export default function Sales() {
         isOpen={isModalOpen}
         onClose={handleCloseSale}
       />
+      <ConfirmModal
+  isOpen={saleToCancel !== null}
+  onClose={() => setSaleToCancel(null)}
+  onConfirm={confirmCancelSale}
+  title="Anular venta"
+  message="¿Estás seguro de que querés anular esta venta? El stock se restaurará automáticamente."
+/>
 
     </div>
   );

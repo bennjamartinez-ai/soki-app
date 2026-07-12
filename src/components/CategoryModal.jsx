@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { Pencil, Trash2, Plus } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+import Modal from "./Modal";
+import Button from "./Button";
+import Input from "./Input";
+import ConfirmModal from "./ConfirmModal";
 
 export default function CategoryModal({
   isOpen,
@@ -8,46 +14,89 @@ export default function CategoryModal({
   setCategories,
 }) {
   const [newCategory, setNewCategory] = useState("");
-
+const [editingCategory, setEditingCategory] = useState(null);
+const [editingValue, setEditingValue] = useState("");
+const [categoryToDelete, setCategoryToDelete] = useState(null);
   if (!isOpen) return null;
 
   function handleAdd() {
-    if (!newCategory.trim()) return;
+  const value = newCategory.trim();
 
-    setCategories((prev) => [
-      ...prev,
-      newCategory,
-    ]);
-
-    setNewCategory("");
+  if (!value) {
+    toast.error("Ingresá un nombre.");
+    return;
   }
+
+  if (categories.includes(value)) {
+    toast.error("La categoría ya existe.");
+    return;
+  }
+
+  setCategories((prev) => [...prev, value]);
+
+  setNewCategory("");
+
+  toast.success("Categoría agregada.");
+}
 
   function handleDelete(category) {
-    if (!window.confirm("¿Eliminar categoría?")) return;
+  setCategoryToDelete(category);
+}
 
-    setCategories((prev) =>
-      prev.filter((item) => item !== category)
-    );
-  }
+function confirmDeleteCategory() {
+  setCategories((prev) =>
+    prev.filter(
+      (item) => item !== categoryToDelete
+    )
+  );
+
+  toast.success("Categoría eliminada.");
+
+  setCategoryToDelete(null);
+}
+
+function confirmDeleteCategory() {
+  setCategories((prev) =>
+    prev.filter(
+      (item) => item !== categoryToDelete
+    )
+  );
+
+  toast.success("Categoría eliminada.");
+}
 
   function handleEdit(category) {
-    const value = prompt(
-      "Editar categoría",
-      category
-    );
+  setEditingCategory(category);
+  setEditingValue(category);
+}
 
-    if (!value) return;
+function saveEdition() {
+  const value = editingValue.trim();
 
-    setCategories((prev) =>
-      prev.map((item) =>
-        item === category ? value : item
-      )
-    );
+  if (!value) {
+    toast.error("Ingresá un nombre.");
+    return;
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+  setCategories((prev) =>
+    prev.map((item) =>
+      item === editingCategory ? value : item
+    )
+  );
 
+  toast.success("Categoría actualizada.");
+
+  setEditingCategory(null);
+}
+
+  return (
+    
+<Modal
+  isOpen={isOpen}
+  onClose={onClose}
+  title="Categorías"
+  description="Administrá las categorías de Soki."
+>
       <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
         <h2 className="mb-6 text-2xl font-bold">
@@ -116,17 +165,95 @@ export default function CategoryModal({
 
         <div className="mt-6 flex justify-end">
 
-          <button
-            onClick={onClose}
-            className="rounded-lg bg-zinc-700 px-4 py-2"
-          >
-            Cerrar
-          </button>
+          <Button
+  variant="secondary"
+  onClick={onClose}
+>
+  Cerrar
+</Button>
+
+          <ConfirmModal
+          isOpen={categoryToDelete !== null}
+          onClose={() => setCategoryToDelete(null)}
+          onConfirm={confirmDeleteCategory}
+          title="Eliminar categoría"
+          message="¿Estás seguro de que querés eliminar esta categoría?"
+          />
 
         </div>
 
       </div>
+{editingCategory && (
+  <Modal
+    isOpen={true}
+    onClose={() => setEditingCategory(null)}
+    title="Editar categoría"
+    description="Modificá el nombre."
+  >
+    <Input
+      value={editingValue}
+      onChange={(e) =>
+        setEditingValue(e.target.value)
+      }
+    />
 
+    <div className="mt-6 flex justify-end gap-3">
+      <Button
+        variant="secondary"
+        onClick={() =>
+          setEditingCategory(null)
+        }
+      >
+        Cancelar
+      </Button>
+
+      <Button onClick={saveEdition}>
+        Guardar
+      </Button>
     </div>
+  </Modal>
+)}
+
+{editingCategory && (
+  <Modal
+    isOpen={true}
+    onClose={() => setEditingCategory(null)}
+    title="Editar categoría"
+    description="Modificá el nombre."
+  >
+    <Input
+      value={editingValue}
+      onChange={(e) =>
+        setEditingValue(e.target.value)
+      }
+    />
+
+    <div className="mt-6 flex justify-end gap-3">
+      <Button
+        variant="secondary"
+        onClick={() =>
+          setEditingCategory(null)
+        }
+      >
+        Cancelar
+      </Button>
+
+      <Button onClick={saveEdition}>
+        Guardar
+      </Button>
+    </div>
+  </Modal>
+)}
+
+<ConfirmModal
+  isOpen={categoryToDelete !== null}
+  onClose={() =>
+    setCategoryToDelete(null)
+  }
+  onConfirm={confirmDeleteCategory}
+  title="Eliminar categoría"
+  message="¿Seguro que querés eliminar esta categoría?"
+/>
+    </Modal>
   );
 }

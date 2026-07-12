@@ -1,8 +1,9 @@
+import SaleCompletedModal from "../components/SaleCompletedModal";
+import generateSalePdf from "../utils/generateSalePdf";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
-
+import { toast } from "react-hot-toast";
 import { useInventory } from "../context/InventoryContext";
-
 import ProductCard from "../components/ProductCard";
 import CartItem from "../components/CartItem";
 
@@ -21,7 +22,8 @@ export default function Orders() {
   const [shipping, setShipping] = useState(0);
 
   const [discount, setDiscount] = useState(0);
-
+const [completedSale, setCompletedSale] = useState(null);
+const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
   const filteredProducts = products
     .map((product) => {
 
@@ -157,7 +159,7 @@ export default function Orders() {
   function handleConfirmSale() {
 
     if (cart.length === 0) {
-      alert(
+      toast.error(
         "Agregá al menos un producto."
       );
       return;
@@ -183,20 +185,22 @@ export default function Orders() {
       })
     );
 
-    setSales((prev) => [
-  ...prev,
-  {
-    id: Date.now(),
-    createdAt: Date.now(),
-    date: new Date().toLocaleString(),
-    status: "completed",
-    items: cart,
-    subtotal,
-    shipping,
-    discount,
-    total,
-  },
-]);
+    const newSale = {
+  id: Date.now(),
+  createdAt: Date.now(),
+  date: new Date().toLocaleString(),
+  status: "completed",
+  items: cart,
+  subtotal,
+  shipping,
+  discount,
+  total,
+};
+
+setSales((prev) => [...prev, newSale]);
+
+setCompletedSale(newSale);
+setIsCompletedModalOpen(true);
 
     setCart([]);
 
@@ -204,7 +208,7 @@ export default function Orders() {
 
     setDiscount(0);
 
-    alert(
+    toast.success(
       "Venta registrada correctamente."
     );
 
@@ -362,7 +366,15 @@ export default function Orders() {
         </div>
 
       </div>
-
+<SaleCompletedModal
+  isOpen={isCompletedModalOpen}
+  sale={completedSale}
+  onClose={() => {
+    setIsCompletedModalOpen(false);
+    setCompletedSale(null);
+  }}
+  onDownload={() => generateSalePdf(completedSale)}
+/>
     </div>
   );
 }

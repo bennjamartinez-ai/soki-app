@@ -6,6 +6,8 @@ import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
 import CategoryModal from "../components/CategoryModal";
 import StatCard from "../components/StatCard";
+import ConfirmModal from "../components/ConfirmModal";
+import { toast } from "react-hot-toast";
 
 export default function Products() {
 
@@ -22,6 +24,7 @@ export default function Products() {
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const [editingProduct, setEditingProduct] = useState(null);
+const [productToDelete, setProductToDelete] = useState(null);
 
   function handleAddProduct(newProduct) {
     if (editingProduct) {
@@ -48,12 +51,16 @@ export default function Products() {
   }
 
   function handleDeleteProduct(id) {
-    if (!window.confirm("¿Eliminar este producto?")) return;
+  setProductToDelete(id);
+}
 
-    setProducts((prev) =>
-      prev.filter((product) => product.id !== id)
-    );
-  }
+function confirmDeleteProduct() {
+  setProducts((prev) =>
+    prev.filter((product) => product.id !== productToDelete)
+  );
+
+  toast.success("Producto eliminado.");
+}
 
   function handleEditProduct(product) {
     setEditingProduct(product);
@@ -170,6 +177,15 @@ className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 
         setCategories={setCategories}
       />
 
+      <ConfirmModal
+        isOpen={productToDelete !== null}
+        onClose={() => setProductToDelete(null)}
+        onConfirm={confirmDeleteProduct}
+        title="Eliminar producto"
+        message="¿Estás seguro de que querés eliminar este producto? Esta acción no se puede deshacer."
+      />
     </div>
+    
   );
+  
 }

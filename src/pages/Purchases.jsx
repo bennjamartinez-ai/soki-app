@@ -4,6 +4,7 @@ import PurchaseHeader from "../components/PurchaseHeader";
 import AddPurchaseProduct from "../components/AddPurchaseProduct";
 import PurchaseList from "../components/PurchaseList";
 import PurchaseSummary from "../components/PurchaseSummary";
+import { toast } from "react-hot-toast";
 
 export default function Purchases() {
 
@@ -24,12 +25,12 @@ const {
 function handleConfirmPurchase() {
 
   if (!purchase.providerId) {
-    alert("Seleccioná un proveedor.");
+    toast.error("Seleccioná un proveedor.");
     return;
   }
 
   if (purchase.items.length === 0) {
-    alert("Agregá al menos un producto.");
+   toast.error("Agregá al menos un producto.");
     return;
   }
 
@@ -69,7 +70,7 @@ function handleConfirmPurchase() {
 
   ]);
 
-  alert("Compra registrada correctamente.");
+toast.success("Compra registrada correctamente.");
 
   setPurchase({
     providerId: "",

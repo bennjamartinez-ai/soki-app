@@ -1,4 +1,9 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+
+import Modal from "./Modal";
+import Button from "./Button";
+import Input from "./Input";
 
 export default function ProviderModal({
   isOpen,
@@ -13,10 +18,10 @@ export default function ProviderModal({
 
   useEffect(() => {
     if (provider) {
-      setName(provider.name);
-      setPhone(provider.phone);
-      setInstagram(provider.instagram);
-      setNotes(provider.notes);
+      setName(provider.name || "");
+      setPhone(provider.phone || "");
+      setInstagram(provider.instagram || "");
+      setNotes(provider.notes || "");
     } else {
       setName("");
       setPhone("");
@@ -29,7 +34,7 @@ export default function ProviderModal({
 
   function handleSave() {
     if (!name.trim()) {
-      alert("Ingresá un nombre.");
+      toast.error("Ingresá un nombre.");
       return;
     }
 
@@ -40,71 +45,72 @@ export default function ProviderModal({
       notes,
     });
 
+    toast.success(
+      provider
+        ? "Proveedor actualizado."
+        : "Proveedor creado."
+    );
+
     onClose();
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={
+        provider
+          ? "Editar proveedor"
+          : "Nuevo proveedor"
+      }
+      description="Completá la información del proveedor."
+    >
+      <div className="space-y-4">
 
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        <Input
+          placeholder="Nombre"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-        <h2 className="mb-6 text-2xl font-bold">
-          {provider ? "Editar proveedor" : "Nuevo proveedor"}
-        </h2>
+        <Input
+          placeholder="Teléfono"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
 
-        <div className="space-y-4">
+        <Input
+          placeholder="Instagram"
+          value={instagram}
+          onChange={(e) => setInstagram(e.target.value)}
+        />
 
-          <input
-            placeholder="Nombre"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-lg bg-zinc-800 p-3 outline-none"
-          />
-
-          <input
-            placeholder="Teléfono"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full rounded-lg bg-zinc-800 p-3 outline-none"
-          />
-
-          <input
-            placeholder="Instagram"
-            value={instagram}
-            onChange={(e) => setInstagram(e.target.value)}
-            className="w-full rounded-lg bg-zinc-800 p-3 outline-none"
-          />
-
-          <textarea
-            placeholder="Observaciones"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            rows={4}
-            className="w-full rounded-lg bg-zinc-800 p-3 outline-none resize-none"
-          />
-
-        </div>
-
-        <div className="mt-6 flex justify-end gap-3">
-
-          <button
-            onClick={onClose}
-            className="rounded-lg bg-zinc-700 px-4 py-2"
-          >
-            Cancelar
-          </button>
-
-          <button
-            onClick={handleSave}
-            className="rounded-lg bg-amber-200 px-4 py-2 font-semibold text-black"
-          >
-            {provider ? "Actualizar" : "Guardar"}
-          </button>
-
-        </div>
+        <textarea
+          placeholder="Observaciones"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={4}
+          className="w-full rounded-xl bg-zinc-800/80 p-3 outline-none resize-none focus:ring-2 focus:ring-amber-200"
+        />
 
       </div>
 
-    </div>
+      <div className="mt-6 flex justify-end gap-3">
+
+        <Button
+          variant="secondary"
+          onClick={onClose}
+        >
+          Cancelar
+        </Button>
+
+        <Button
+          onClick={handleSave}
+        >
+          {provider ? "Actualizar" : "Guardar"}
+        </Button>
+
+      </div>
+    </Modal>
   );
 }
