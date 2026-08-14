@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";import {
+import { Link, useLocation } from "react-router-dom";
+import {
   Menu,
   Search,
   ShoppingCart,
@@ -12,8 +13,11 @@ import MobileMenu from "./MobileMenu";
 function Navbar() {
   const { cart } = useCart();
 
-const [mobileMenuOpen, setMobileMenuOpen] =
-  useState(false);
+  const { pathname } = useLocation();
+
+  const [mobileMenuOpen, setMobileMenuOpen] =
+    useState(false);
+
   const totalItems = cart.reduce(
     (total, item) => total + item.quantity,
     0
@@ -26,21 +30,20 @@ const [mobileMenuOpen, setMobileMenuOpen] =
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md">
 
-<div className="mx-auto flex h-20 max-w-[1800px] items-center px-4 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-[1800px] items-center px-4 lg:px-8">
+
         {/* IZQUIERDA */}
 
-<div className="flex flex-1 items-center gap-4 lg:gap-8">
+        <div className="flex flex-1 items-center gap-4 lg:gap-8">
 
-<button
-  onClick={() =>
-    setMobileMenuOpen(true)
-  }
-  className="rounded-full p-3 transition hover:bg-zinc-100 lg:hidden"
->
-
-  <Menu size={24} />
-
-</button>
+          <button
+            onClick={() =>
+              setMobileMenuOpen(true)
+            }
+            className="rounded-full p-3 transition hover:bg-zinc-100 lg:hidden"
+          >
+            <Menu size={24} />
+          </button>
 
           <Link
             to="/"
@@ -102,35 +105,34 @@ const [mobileMenuOpen, setMobileMenuOpen] =
 
         {/* DERECHA */}
 
-<div className="ml-auto flex items-center gap-2 lg:gap-4">
+        <div className="ml-auto flex items-center gap-2 lg:gap-4">
+
           {/* BUSCADOR */}
 
-{pathname === "/" && (
+          {pathname === "/" && (
 
-  <div className="hidden items-center rounded-full bg-zinc-100 px-4 lg:flex">
+            <div className="hidden items-center rounded-full bg-zinc-100 px-4 lg:flex">
 
-    <Search
-      size={18}
-      className="text-zinc-500"
-    />
+              <Search
+                size={18}
+                className="text-zinc-500"
+              />
 
-    <input
-      type="text"
-      placeholder="Buscar"
-      className="h-11 w-52 bg-transparent px-3 text-sm outline-none placeholder:text-zinc-500"
-    />
+              <input
+                type="text"
+                placeholder="Buscar"
+                className="h-11 w-52 bg-transparent px-3 text-sm outline-none placeholder:text-zinc-500"
+              />
 
-  </div>
+            </div>
 
-)}
+          )}
 
           {/* USUARIO */}
 
           <div className="hidden lg:block">
-
-  <UserMenu />
-
-</div>
+            <UserMenu />
+          </div>
 
           {/* CARRITO */}
 
@@ -157,12 +159,12 @@ const [mobileMenuOpen, setMobileMenuOpen] =
 
       </div>
 
-        <MobileMenu
-  open={mobileMenuOpen}
-  onClose={() =>
-    setMobileMenuOpen(false)
-  }
-/>
+      <MobileMenu
+        open={mobileMenuOpen}
+        onClose={() =>
+          setMobileMenuOpen(false)
+        }
+      />
 
     </header>
   );
