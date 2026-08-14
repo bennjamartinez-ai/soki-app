@@ -1,6 +1,14 @@
 import { useState } from "react";
-import { Pencil, Trash2, Plus } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+} from "lucide-react";
 import { toast } from "react-hot-toast";
+
+import { useCategories } from "../context/CategoriesContext";
 
 import Modal from "./Modal";
 import Button from "./Button";
@@ -10,250 +18,527 @@ import ConfirmModal from "./ConfirmModal";
 export default function CategoryModal({
   isOpen,
   onClose,
-  categories,
-  setCategories,
 }) {
-  const [newCategory, setNewCategory] = useState("");
-const [editingCategory, setEditingCategory] = useState(null);
-const [editingValue, setEditingValue] = useState("");
-const [categoryToDelete, setCategoryToDelete] = useState(null);
+const {
+  categories,
+  addCategory,
+  editCategory,
+  removeCategory,
+  moveCategory,
+} = useCategories();
+
+const [newCategory, setNewCategory] = useState({
+  name: "",
+  slug: "",
+  is_active: true,
+  is_featured: false,
+  display_order: categories.length + 1,
+});
+
+  const [editingCategory, setEditingCategory] = useState(null);
+
+const [editingValue, setEditingValue] = useState({
+  name: "",
+  slug: "",
+  is_active: true,
+  is_featured: false,
+  display_order: 0,
+});
+
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+
   if (!isOpen) return null;
 
-  function handleAdd() {
-  const value = newCategory.trim();
+ async function handleAdd() {
 
-  if (!value) {
+  if (!newCategory.name.trim()) {
+
     toast.error("Ingresá un nombre.");
+
     return;
+
   }
 
-  if (categories.includes(value)) {
+  if (
+
+    categories.some(
+
+      (c) =>
+
+        c.name.toLowerCase() ===
+
+        newCategory.name.toLowerCase()
+
+    )
+
+  ) {
+
     toast.error("La categoría ya existe.");
+
     return;
+
   }
 
-  setCategories((prev) => [...prev, value]);
+  try {
 
-  setNewCategory("");
+    await addCategory(newCategory);
 
-  toast.success("Categoría agregada.");
-}
+    toast.success("Categoría agregada.");
 
-  function handleDelete(category) {
-  setCategoryToDelete(category);
-}
+    setNewCategory({
 
-function confirmDeleteCategory() {
-  setCategories((prev) =>
-    prev.filter(
-      (item) => item !== categoryToDelete
-    )
-  );
+      name: "",
 
-  toast.success("Categoría eliminada.");
+      slug: "",
 
-  setCategoryToDelete(null);
-}
+      is_active: true,
 
-function confirmDeleteCategory() {
-  setCategories((prev) =>
-    prev.filter(
-      (item) => item !== categoryToDelete
-    )
-  );
+      is_featured: false,
 
-  toast.success("Categoría eliminada.");
+      display_order: categories.length + 2,
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("No se pudo agregar.");
+
+  }
+
 }
 
   function handleEdit(category) {
+
   setEditingCategory(category);
-  setEditingValue(category);
+
+  setEditingValue({
+
+    name: category.name,
+
+    slug: category.slug,
+
+    is_active: category.is_active,
+
+    is_featured: category.is_featured,
+
+    display_order: category.display_order,
+
+  });
+
 }
 
-function saveEdition() {
-  const value = editingValue.trim();
+ async function saveEdition() {
 
-  if (!value) {
+  if (!editingValue.name.trim()) {
+
     toast.error("Ingresá un nombre.");
+
     return;
+
   }
 
-  setCategories((prev) =>
-    prev.map((item) =>
-      item === editingCategory ? value : item
-    )
-  );
+  try {
 
-  toast.success("Categoría actualizada.");
+    await editCategory(
 
-  setEditingCategory(null);
+      editingCategory.id,
+
+      editingValue
+
+    );
+
+    toast.success("Categoría actualizada.");
+
+    setEditingCategory(null);
+
+    setEditingValue({
+
+      name: "",
+
+      slug: "",
+
+      is_active: true,
+
+      is_featured: false,
+
+      display_order: 0,
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error("No se pudo actualizar.");
+
+  }
+
 }
 
+  function handleDelete(category) {
+    setCategoryToDelete(category);
+  }
+
+  async function confirmDeleteCategory() {
+    try {
+      await removeCategory(categoryToDelete.id);
+
+      toast.success("Categoría eliminada.");
+
+      setCategoryToDelete(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("No se pudo eliminar.");
+    }
+  }
+
   return (
-    
-<Modal
-  isOpen={isOpen}
-  onClose={onClose}
-  title="Categorías"
-  description="Administrá las categorías de Soki."
->
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Categorías"
+        description="Administrá las categorías."
+      >
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
 
-        <h2 className="mb-6 text-2xl font-bold">
-          Categorías
-        </h2>
+  <Input
+    label="Nombre"
+    value={newCategory.name}
+    onChange={(e) =>
+      setNewCategory({
+        ...newCategory,
+        name: e.target.value,
+        slug: e.target.value
+          .toLowerCase()
+          .replace(/\s+/g, "-"),
+      })
+    }
+  />
 
-        <div className="mb-6 flex gap-3">
+  <Input
+    label="Slug"
+    value={newCategory.slug}
+    onChange={(e) =>
+      setNewCategory({
+        ...newCategory,
+        slug: e.target.value,
+      })
+    }
+  />
 
-          <input
-            value={newCategory}
-            onChange={(e) =>
-              setNewCategory(e.target.value)
-            }
-            placeholder="Nueva categoría..."
-            className="flex-1 rounded-lg bg-zinc-800 p-3 outline-none"
-          />
+  <Input
+    label="Orden"
+    type="number"
+    value={newCategory.display_order}
+    onChange={(e) =>
+      setNewCategory({
+        ...newCategory,
+        display_order: Number(e.target.value),
+      })
+    }
+  />
 
-          <button
-            onClick={handleAdd}
-            className="flex items-center gap-2 rounded-lg bg-amber-200 px-4 font-semibold text-black"
-          >
-            <Plus size={18} />
-            Agregar
-          </button>
+  <div className="flex items-end">
 
-        </div>
+    <button
+      onClick={handleAdd}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200 py-3 font-semibold text-black transition hover:bg-amber-300"
+    >
 
-        <div className="space-y-2">
+      <Plus size={18} />
 
-          {categories.map((category) => (
+      Agregar
 
-            <div
-              key={category}
-              className="flex items-center justify-between rounded-lg bg-zinc-800 px-4 py-3"
-            >
+    </button>
 
-              <span>{category}</span>
+  </div>
 
-              <div className="flex gap-3">
+</div>
 
-                <button
-                  onClick={() =>
-                    handleEdit(category)
-                  }
-                  className="text-blue-400"
-                >
-                  <Pencil size={18} />
-                </button>
+<div className="mt-4 flex gap-8">
 
-                <button
-                  onClick={() =>
-                    handleDelete(category)
-                  }
-                  className="text-red-400"
-                >
-                  <Trash2 size={18} />
-                </button>
+  <label className="flex items-center gap-2">
 
-              </div>
+    <input
+      type="checkbox"
+      checked={newCategory.is_active}
+      onChange={(e) =>
+        setNewCategory({
+          ...newCategory,
+          is_active: e.target.checked,
+        })
+      }
+    />
+
+    Activa
+
+  </label>
+
+  <label className="flex items-center gap-2">
+
+    <input
+      type="checkbox"
+      checked={newCategory.is_featured}
+      onChange={(e) =>
+        setNewCategory({
+          ...newCategory,
+          is_featured: e.target.checked,
+        })
+      }
+    />
+
+    Destacada
+
+  </label>
+
+</div>
+          <div className="space-y-4">
+
+  {[...categories]
+    .sort(
+      (a, b) =>
+        a.display_order - b.display_order
+    )
+    .map((category) => (
+
+      <div
+        key={category.id}
+        className="rounded-2xl bg-zinc-800 p-5"
+      >
+
+        <div className="flex items-start justify-between">
+
+          <div>
+
+            <div className="flex items-center gap-3">
+
+              <span className="text-lg font-semibold">
+
+                {category.name}
+
+              </span>
+
+              <span
+                className={`rounded-full px-2 py-1 text-xs font-semibold ${
+                  category.is_active
+                    ? "bg-green-500/20 text-green-400"
+                    : "bg-zinc-700 text-zinc-400"
+                }`}
+              >
+
+                {category.is_active
+                  ? "Activa"
+                  : "Oculta"}
+
+              </span>
+
+              {category.is_featured && (
+
+                <span className="rounded-full bg-amber-500/20 px-2 py-1 text-xs font-semibold text-amber-300">
+
+                  Destacada
+
+                </span>
+
+              )}
 
             </div>
 
-          ))}
+            <p className="mt-2 text-sm text-zinc-400">
 
-        </div>
+              Slug: {category.slug}
 
-        <div className="mt-6 flex justify-end">
+            </p>
 
-          <Button
-  variant="secondary"
-  onClick={onClose}
+            <p className="mt-1 text-sm text-zinc-500">
+
+              Orden: {category.display_order}
+
+            </p>
+
+          </div>
+
+          <div className="flex items-center gap-2">
+
+          <button
+  onClick={() =>
+    moveCategory(category.id, "up")
+  }
+  className="rounded-lg p-2 transition hover:bg-zinc-700"
+  title="Subir"
 >
-  Cerrar
-</Button>
+  <ChevronUp size={18} />
+</button>
 
-          <ConfirmModal
-          isOpen={categoryToDelete !== null}
-          onClose={() => setCategoryToDelete(null)}
-          onConfirm={confirmDeleteCategory}
-          title="Eliminar categoría"
-          message="¿Estás seguro de que querés eliminar esta categoría?"
-          />
+           <button
+  onClick={() =>
+    moveCategory(category.id, "down")
+  }
+  className="rounded-lg p-2 transition hover:bg-zinc-700"
+  title="Bajar"
+>
+  <ChevronDown size={18} />
+</button>
+            <button
+              onClick={() =>
+                handleEdit(category)
+              }
+              className="rounded-lg p-2 text-blue-400 transition hover:bg-zinc-700"
+            >
+
+              <Pencil size={18} />
+
+            </button>
+
+            <button
+              onClick={() =>
+                handleDelete(category)
+              }
+              className="rounded-lg p-2 text-red-400 transition hover:bg-zinc-700"
+            >
+
+              <Trash2 size={18} />
+
+            </button>
+
+          </div>
 
         </div>
 
       </div>
-{editingCategory && (
-  <Modal
-    isOpen={true}
-    onClose={() => setEditingCategory(null)}
-    title="Editar categoría"
-    description="Modificá el nombre."
-  >
-    <Input
-      value={editingValue}
-      onChange={(e) =>
-        setEditingValue(e.target.value)
-      }
-    />
 
-    <div className="mt-6 flex justify-end gap-3">
-      <Button
-        variant="secondary"
-        onClick={() =>
-          setEditingCategory(null)
-        }
+    ))}
+
+</div>
+
+          <div className="flex justify-end">
+            <Button
+              variant="secondary"
+              onClick={onClose}
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={editingCategory !== null}
+        onClose={() => setEditingCategory(null)}
+        title="Editar categoría"
+        description="Modificá el nombre."
       >
-        Cancelar
-      </Button>
+        <div className="space-y-5">
 
-      <Button onClick={saveEdition}>
-        Guardar
-      </Button>
-    </div>
-  </Modal>
-)}
+  <Input
+    label="Nombre"
+    value={editingValue.name}
+    onChange={(e) =>
+      setEditingValue({
+        ...editingValue,
+        name: e.target.value,
+        slug: e.target.value
+          .toLowerCase()
+          .replace(/\s+/g, "-"),
+      })
+    }
+  />
 
-{editingCategory && (
-  <Modal
-    isOpen={true}
-    onClose={() => setEditingCategory(null)}
-    title="Editar categoría"
-    description="Modificá el nombre."
-  >
-    <Input
-      value={editingValue}
-      onChange={(e) =>
-        setEditingValue(e.target.value)
-      }
-    />
+  <Input
+    label="Slug"
+    value={editingValue.slug}
+    onChange={(e) =>
+      setEditingValue({
+        ...editingValue,
+        slug: e.target.value,
+      })
+    }
+  />
 
-    <div className="mt-6 flex justify-end gap-3">
-      <Button
-        variant="secondary"
-        onClick={() =>
-          setEditingCategory(null)
+  <Input
+    label="Orden"
+    type="number"
+    value={editingValue.display_order}
+    onChange={(e) =>
+      setEditingValue({
+        ...editingValue,
+        display_order: Number(e.target.value),
+      })
+    }
+  />
+
+  <div className="flex gap-8">
+
+    <label className="flex items-center gap-2">
+
+      <input
+        type="checkbox"
+        checked={editingValue.is_active}
+        onChange={(e) =>
+          setEditingValue({
+            ...editingValue,
+            is_active: e.target.checked,
+          })
         }
-      >
-        Cancelar
-      </Button>
+      />
 
-      <Button onClick={saveEdition}>
-        Guardar
-      </Button>
-    </div>
-  </Modal>
-)}
+      Activa
 
-<ConfirmModal
-  isOpen={categoryToDelete !== null}
-  onClose={() =>
-    setCategoryToDelete(null)
-  }
-  onConfirm={confirmDeleteCategory}
-  title="Eliminar categoría"
-  message="¿Seguro que querés eliminar esta categoría?"
-/>
-    </Modal>
+    </label>
+
+    <label className="flex items-center gap-2">
+
+      <input
+        type="checkbox"
+        checked={editingValue.is_featured}
+        onChange={(e) =>
+          setEditingValue({
+            ...editingValue,
+            is_featured: e.target.checked,
+          })
+        }
+      />
+
+      Destacada
+
+    </label>
+
+  </div>
+
+</div>
+
+<div className="mt-6 flex justify-end gap-3">
+
+  <Button
+    variant="secondary"
+    onClick={() =>
+      setEditingCategory(null)
+    }
+  >
+    Cancelar
+  </Button>
+
+  <Button onClick={saveEdition}>
+    Guardar
+  </Button>
+
+</div>
+
+      </Modal>
+
+      <ConfirmModal
+        isOpen={categoryToDelete !== null}
+        onClose={() =>
+          setCategoryToDelete(null)
+        }
+        onConfirm={confirmDeleteCategory}
+        title="Eliminar categoría"
+        message="¿Seguro que querés eliminar esta categoría?"
+      />
+    </>
   );
 }

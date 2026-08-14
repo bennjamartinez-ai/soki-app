@@ -1,74 +1,123 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Providers from "./pages/Providers";
-import Sidebar from "./components/Sidebar";
 
-import Dashboard from "./pages/Dashboard";
-import Products from "./pages/Products";
-import Orders from "./pages/Orders";
-import Purchases from "./pages/Purchases";
-import Sales from "./pages/Sales";
-import Statistics from "./pages/Statistics";
-import { InventoryProvider } from "./context/InventoryContext";
+import AppProviders from "./context/AppProviders";
+
+import StoreLayout from "./store/layouts/StoreLayout";
+import StoreHome from "./store/StoreHome";
+import ProductsPage from "./store/ProductsPage";
+import ProductPage from "./store/ProductPage";
+import CategoryPage from "./store/CategoryPage";
+import AboutPage from "./store/AboutPage";
+import ContactPage from "./store/ContactPage";
+import CartPage from "./store/CartPage";
+import CheckoutPage from "./store/CheckoutPage";
+import LoginPage from "./store/LoginPage";
+import FaqPage from "./store/FaqPage";
+import AccountPage from "./store/AccountPage";
+import OrderSuccessPage from "./store/OrderSuccessPage";
+import OrderDetailsPage from "./store/OrderDetailsPage";
+
+import AdminLayout from "./layouts/AdminLayout";
+
+import Dashboard from "./admin/Dashboard";
+import Products from "./admin/Products";
+import NewSale from "./admin/NewSale";
+import Providers from "./admin/Providers";
+import Purchases from "./admin/Purchases";
+import Sales from "./admin/Sales";
+import Statistics from "./admin/Statistics";
+import StoreOrders from "./admin/StoreOrders";
+import WholesaleRequests from "./admin/WholesaleRequests";
+
+import AdminRoute from "./components/AdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <InventoryProvider>
+    <AppProviders>
       <BrowserRouter>
+        <Routes>
 
-        <div className="min-h-screen bg-zinc-950 text-white">
+          {/* ================= TIENDA ================= */}
 
-        <div className="flex">
+          <Route path="/" element={<StoreLayout />}>
 
-        <Sidebar />
+            <Route index element={<StoreHome />} />
 
-       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-x-auto">
+            <Route path="productos" element={<ProductsPage />} />
 
-      <Routes>
+            <Route path="categoria/:slug" element={<CategoryPage />} />
 
-              <Route
-                path="/"
-                element={<Dashboard />}
-              />
+            <Route path="producto/:id" element={<ProductPage />} />
 
-              <Route
-                path="/products"
-                element={<Products />}
-              />
+            <Route path="nosotros" element={<AboutPage />} />
 
-              <Route
-                path="/orders"
-                element={<Orders />}
-              />
-<Route
-  path="/providers"
-  element={<Providers />}
-/>
-              <Route
-                path="/purchases"
-                element={<Purchases />}
-             />
+            <Route path="contacto" element={<ContactPage />} />
 
-              <Route
-                path="/sales"
-                element={<Sales />}
-              />
+            <Route path="carrito" element={<CartPage />} />
 
-              <Route
-                path="/statistics"
-                element={<Statistics />}
-              />
+            <Route
+              path="checkout"
+              element={
+                <ProtectedRoute>
+                  <CheckoutPage />
+                </ProtectedRoute>
+              }
+            />
 
-          
-            </Routes>
+            <Route
+              path="pedido-realizado"
+              element={<OrderSuccessPage />}
+            />
 
-              </main>
+            <Route
+              path="pedido/:id"
+              element={
+                <ProtectedRoute>
+                  <OrderDetailsPage />
+                </ProtectedRoute>
+              }
+            />
 
-          </div>
+            <Route
+              path="mi-cuenta"
+              element={
+                <ProtectedRoute>
+                  <AccountPage />
+                </ProtectedRoute>
+              }
+            />
 
-        </div>
+            <Route path="login" element={<LoginPage />} />
 
-    </BrowserRouter>
-    </InventoryProvider>
+            <Route path="faq" element={<FaqPage />} />
+
+          </Route>
+
+          {/* ================= PANEL ADMIN ================= */}
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminLayout />
+              </AdminRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<Products />} />
+            <Route path="orders" element={<NewSale />} />
+            <Route path="providers" element={<Providers />} />
+            <Route path="purchases" element={<Purchases />} />
+            <Route path="sales" element={<Sales />} />
+            <Route path="statistics" element={<Statistics />} />
+            <Route path="store-orders" element={<StoreOrders />} />
+            <Route path="wholesale" element={<WholesaleRequests />} />
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+    </AppProviders>
   );
 }
 

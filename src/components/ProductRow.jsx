@@ -1,4 +1,8 @@
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Star,
+} from "lucide-react";
 
 export default function ProductRow({
   product,
@@ -7,7 +11,8 @@ export default function ProductRow({
 }) {
 
   const profit =
-    (product.price || 0) - (product.cost || 0);
+    (product.price || 0) -
+    (product.cost || 0);
 
   const stockColor =
     product.stock <= 0
@@ -22,8 +27,41 @@ export default function ProductRow({
 
       <td className="px-4 py-4 md:px-6">
 
-        <div className="font-semibold">
-          {product.name}
+        <div className="flex items-center gap-3">
+
+          <div>
+
+            <div className="font-semibold">
+
+              {product.name}
+
+            </div>
+
+            {product.featured && (
+
+              <div className="mt-1 flex items-center gap-2 text-xs text-amber-400">
+
+                <Star
+                  size={13}
+                  fill="currentColor"
+                />
+
+                Destacado
+
+                {product.featured_order != null && (
+                  <span className="rounded-full bg-amber-500/20 px-2 py-0.5">
+
+                    #{product.featured_order}
+
+                  </span>
+                )}
+
+              </div>
+
+            )}
+
+          </div>
+
         </div>
 
       </td>
@@ -31,18 +69,20 @@ export default function ProductRow({
       <td className="px-4 py-4 md:px-6">
 
         <span className="rounded-full bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300">
+
           {product.category}
+
         </span>
 
       </td>
 
-      <td className="px-4 py-4 md:px-6 text-sm md:text-base">
+      <td className="px-4 py-4 md:px-6">
 
         ${(product.cost || 0).toLocaleString()}
 
       </td>
 
-      <td className="px-4 py-4 md:px-6 font-medium text-sm md:text-base">
+      <td className="px-4 py-4 md:px-6 font-medium">
 
         ${product.price.toLocaleString()}
 
@@ -78,14 +118,18 @@ export default function ProductRow({
             onClick={() => onEdit(product)}
             className="rounded-lg p-2 text-blue-400 transition hover:bg-blue-500/10 hover:text-blue-300"
           >
+
             <Pencil size={18} />
+
           </button>
 
           <button
             onClick={() => onDelete(product.id)}
             className="rounded-lg p-2 text-red-400 transition hover:bg-red-500/10 hover:text-red-300"
           >
+
             <Trash2 size={18} />
+
           </button>
 
         </div>
@@ -95,4 +139,5 @@ export default function ProductRow({
     </tr>
 
   );
+
 }

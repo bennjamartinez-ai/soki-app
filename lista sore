@@ -1,0 +1,84 @@
+Me parece una muy buena idea. De hecho, yo separaría el proyecto en dos listas:
+Lista 1: Evolución del sistema (Admin y funcionalidades futuras).
+Lista 2: Tienda funcional (dejar el e-commerce 100% terminado).
+Así no mezclamos mejoras futuras con cosas necesarias para lanzar la tienda.
+🛒 LISTA 2 — TIENDA (Versión 1.0)
+🔴 PRIORIDAD 1 — Producto Individual
+Página completa del producto.
+Galería de imágenes
+Zoom de imágenes
+Descripción larga
+Productos relacionados
+Stock disponible
+Categoría
+Compartir producto
+Breadcrumb
+Variantes (preparado)
+🔴 PRIORIDAD 2 — Carrito
+Dejarlo completo.
+Agregar productos
+Eliminar productos
+Cambiar cantidad
+Vaciar carrito
+Persistencia
+Resumen
+Cálculo de envío
+Cupón (preparado)
+🔴 PRIORIDAD 3 — Checkout
+Proceso completo.
+Datos personales
+Dirección
+Método de envío
+Resumen del pedido
+Confirmación
+Crear pedido en la base
+🔴 PRIORIDAD 4 — Mi Cuenta
+Perfil del usuario.
+Ver perfil
+Editar datos
+Cambiar contraseña
+Recuperar contraseña
+Cerrar sesión
+🔴 PRIORIDAD 5 — Mis Pedidos
+Historial completo.
+Lista de pedidos
+Ver detalle
+Estado del pedido
+Fecha
+Total
+Productos comprados
+Dirección
+Número de pedido
+🟠 PRIORIDAD 6 — Wishlist (Favoritos)
+Agregar favoritos
+Eliminar favoritos
+Página de favoritos
+🟠 PRIORIDAD 7 — Búsqueda
+Mejorarla.
+Buscar por categoría
+Buscar por nombre
+Buscar por descripción
+Ordenar
+Filtros
+🟠 PRIORIDAD 8 — Responsive
+Revisar toda la tienda.
+Home
+Productos
+Categorías
+Producto
+Carrito
+Checkout
+Cuenta
+Pedidos
+🟠 PRIORIDAD 9 — SEO
+Meta tags
+Open Graph
+Sitemap
+URLs limpias
+Canonical
+🟢 PRIORIDAD 10 — Integraciones
+Mercado Pago
+Correo Argentino
+Emails
+Analytics
+Pixel Meta

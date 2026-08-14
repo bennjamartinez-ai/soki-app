@@ -1,9 +1,9 @@
-import { useInventory } from "../context/InventoryContext";
+import { useSales } from "../context/SalesContext";
 import StatCard from "../components/StatCard";
 
 export default function Statistics() {
 
-  const { sales } = useInventory();
+ const { sales } = useSales();
 
   const completedSales = sales.filter(
   (sale) => sale.status !== "cancelled"

@@ -1,0 +1,201 @@
+🔴 PRIORIDAD 1 — Panel Admin (Base reutilizable)
+Componentes reutilizables
+
+ConfirmModal
+
+Toast
+
+StatusBadge
+
+StatCard
+
+EmptyState
+
+DataTable
+Una vez hechos, reemplazar en:
+
+Productos
+
+Pedidos
+
+Compras
+
+Proveedores
+
+Mayoristas
+🔴 PRIORIDAD 2 — Categorías ⭐ (Lo que empezamos ahora)
+Panel
+
+CRUD completo
+
+Crear
+
+Editar
+
+Eliminar
+
+Activar / Desactivar
+
+Orden
+
+Imagen
+
+Categoría destacada
+Store
+
+Mostrar categorías
+
+Filtro por categoría
+
+Navegación
+
+Categorías destacadas Home
+🔴 PRIORIDAD 3 — Productos Destacados
+Desde Admin.
+
+Destacar producto
+
+Orden manual
+
+Cantidad visible
+
+Mostrar en Home
+🔴 PRIORIDAD 4 — SALE
+No como categoría.
+Como módulo independiente.
+
+Activar oferta
+
+Precio normal
+
+Precio oferta
+
+Fecha inicio
+
+Fecha fin
+
+Banner automático
+
+Sección Sale
+🟠 PRIORIDAD 5 — Personalización de la tienda
+Nuevo módulo:
+Tienda
+Inicio
+
+Hero
+
+Texto
+
+Imagen
+
+Botón
+Banners
+
+Crear
+
+Editar
+
+Activar
+Navbar
+
+Orden
+
+Mostrar / ocultar páginas
+Footer
+
+Redes
+
+Mail
+
+Dirección
+
+WhatsApp
+Información
+
+Logo
+
+Nombre
+
+Colores
+🟠 PRIORIDAD 6 — Productos
+Mejorar muchísimo.
+
+Variantes
+
+Colores
+
+Talles
+
+Múltiples imágenes
+
+Producto destacado
+
+Producto en oferta
+
+SEO
+🟠 PRIORIDAD 7 — Usuarios
+
+Mi Cuenta
+
+Mis Pedidos
+
+Recuperar contraseña
+
+Cambiar contraseña
+
+Editar perfil
+🟠 PRIORIDAD 8 — Mayoristas
+Ya está funcional.
+Falta:
+
+Precios mayoristas
+
+Carrito mayorista
+
+Checkout mayorista
+
+Historial mayorista
+🟢 PRIORIDAD 9 — Dashboard
+Muchísimo más completo.
+
+Ventas hoy
+
+Esta semana
+
+Este mes
+
+Productos más vendidos
+
+Categorías más vendidas
+
+Clientes nuevos
+
+Ticket promedio
+
+Últimos pedidos
+🟢 PRIORIDAD 10 — Marketing
+
+Cupones
+
+Descuentos
+
+Popups
+
+Newsletter
+
+Emails automáticos
+🟢 PRIORIDAD 11 — Futuro
+
+Mercado Pago
+
+Correo Argentino
+
+Facturación
+
+Analytics
+
+Pixel Meta
+
+Google Analytics
+
+SEO completo

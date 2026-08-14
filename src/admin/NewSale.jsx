@@ -1,32 +1,37 @@
-import SaleCompletedModal from "../components/SaleCompletedModal";
-import generateSalePdf from "../utils/generateSalePdf";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { useInventory } from "../context/InventoryContext";
+
+import { useProducts } from "../context/ProductsContext";
+import { useSales } from "../context/SalesContext";
+
 import ProductCard from "../components/ProductCard";
 import CartItem from "../components/CartItem";
+import SaleCompletedModal from "../components/SaleCompletedModal";
 
-export default function Orders() {
-  const {
-    products,
-    setProducts,
-    sales,
-    setSales,
-  } = useInventory();
+import generateSalePdf from "../utils/generateSalePdf";
+
+export default function NewSale() {
+  const { products, reloadProducts } = useProducts();
+  const { addSale } = useSales();
 
   const [search, setSearch] = useState("");
 
   const [cart, setCart] = useState([]);
 
   const [shipping, setShipping] = useState(0);
-
   const [discount, setDiscount] = useState(0);
-const [completedSale, setCompletedSale] = useState(null);
-const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
+
+  const [completedSale, setCompletedSale] =
+    useState(null);
+
+  const [
+    isCompletedModalOpen,
+    setIsCompletedModalOpen,
+  ] = useState(false);
+
   const filteredProducts = products
     .map((product) => {
-
       const cartItem = cart.find(
         (item) => item.id === product.id
       );
@@ -37,7 +42,6 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
           product.stock -
           (cartItem?.quantity || 0),
       };
-
     })
     .filter((product) =>
       product.name
@@ -46,19 +50,14 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
     );
 
   function handleAddProduct(product) {
-
-    if (product.availableStock <= 0) {
-      return;
-    }
+    if (product.availableStock <= 0) return;
 
     setCart((prev) => {
-
       const exists = prev.find(
         (item) => item.id === product.id
       );
 
       if (exists) {
-
         return prev.map((item) =>
           item.id === product.id
             ? {
@@ -67,7 +66,6 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
               }
             : item
         );
-
       }
 
       return [
@@ -77,13 +75,10 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
           quantity: 1,
         },
       ];
-
     });
-
   }
 
   function increaseQuantity(id) {
-
     const product = products.find(
       (p) => p.id === id
     );
@@ -93,6 +88,7 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
     );
 
     if (
+      !product ||
       cartItem.quantity >= product.stock
     ) {
       return;
@@ -108,11 +104,9 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
           : item
       )
     );
-
   }
 
   function decreaseQuantity(id) {
-
     setCart((prev) =>
       prev
         .map((item) =>
@@ -127,96 +121,64 @@ const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
           (item) => item.quantity > 0
         )
     );
-
   }
 
   function removeProduct(id) {
-
     setCart((prev) =>
       prev.filter(
         (item) => item.id !== id
       )
     );
-
   }
-
-  const subtotal = useMemo(() => {
-
+    const subtotal = useMemo(() => {
     return cart.reduce(
-      (acc, item) =>
-        acc +
-        item.price * item.quantity,
+      (acc, item) => acc + item.price * item.quantity,
       0
     );
-
   }, [cart]);
 
-  const total =
-    subtotal +
-    shipping -
-    discount;
+  const total = subtotal + shipping - discount;
 
-  function handleConfirmSale() {
-
+  async function handleConfirmSale() {
     if (cart.length === 0) {
-      toast.error(
-        "Agregá al menos un producto."
-      );
+      toast.error("Agregá al menos un producto.");
       return;
     }
 
-    setProducts((prev) =>
-      prev.map((product) => {
+    try {
+      const newSale = {
+        status: "completed",
+        subtotal,
+        shipping,
+        discount,
+        total,
+        items: cart,
+      };
 
-        const sold = cart.find(
-          (item) =>
-            item.id === product.id
-        );
+      const savedSale = await addSale(newSale);
 
-        if (!sold) return product;
+      setCompletedSale({
+        ...savedSale,
+        items: cart,
+      });
 
-        return {
-          ...product,
-          stock:
-            product.stock -
-            sold.quantity,
-        };
+      setIsCompletedModalOpen(true);
 
-      })
-    );
+      setCart([]);
+      setShipping(0);
+      setDiscount(0);
 
-    const newSale = {
-  id: Date.now(),
-  createdAt: Date.now(),
-  date: new Date().toLocaleString(),
-  status: "completed",
-  items: cart,
-  subtotal,
-  shipping,
-  discount,
-  total,
-};
+      await reloadProducts();
 
-setSales((prev) => [...prev, newSale]);
+      toast.success("Venta registrada correctamente.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al registrar la venta.");
+    }
+  }
 
-setCompletedSale(newSale);
-setIsCompletedModalOpen(true);
-
-    setCart([]);
-
-    setShipping(0);
-
-    setDiscount(0);
-
-    toast.success(
-      "Venta registrada correctamente."
-    );
-
-  } 
-   return (
+  return (
     <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-
-      {/* IZQUIERDA */}
 
       <div className="xl:col-span-7">
 
@@ -243,24 +205,20 @@ setIsCompletedModalOpen(true);
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
           {filteredProducts.map((product) => (
-
             <ProductCard
               key={product.id}
               product={product}
               onAdd={handleAddProduct}
             />
-
           ))}
 
         </div>
 
       </div>
 
-      {/* DERECHA */}
-
       <div className="xl:col-span-5">
 
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 md:p-6 xl:sticky xl:top-8">
+        <div className="sticky top-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
 
           <h2 className="mb-6 text-2xl font-bold">
             PRESUPUESTO
@@ -269,19 +227,13 @@ setIsCompletedModalOpen(true);
           <div className="space-y-3">
 
             {cart.length === 0 ? (
-
               <div className="flex h-48 items-center justify-center rounded-xl border border-dashed border-zinc-700">
-
                 <p className="text-zinc-500">
                   Todavía no agregaste productos.
                 </p>
-
               </div>
-
             ) : (
-
               cart.map((item) => (
-
                 <CartItem
                   key={item.id}
                   item={item}
@@ -289,9 +241,7 @@ setIsCompletedModalOpen(true);
                   onDecrease={decreaseQuantity}
                   onRemove={removeProduct}
                 />
-
               ))
-
             )}
 
           </div>
@@ -299,13 +249,10 @@ setIsCompletedModalOpen(true);
           <div className="mt-6 space-y-4 border-t border-zinc-800 pt-6">
 
             <div className="flex justify-between">
-
               <span>Subtotal</span>
-
               <span>
-                ${subtotal.toLocaleString()}
+                ${subtotal.toLocaleString("es-AR")}
               </span>
-
             </div>
 
             <div className="flex items-center justify-between">
@@ -342,15 +289,15 @@ setIsCompletedModalOpen(true);
 
               <div className="flex items-center justify-between">
 
-            <span className="text-lg font-bold md:text-2xl">
-              Total
-            </span>
+                <span className="text-2xl font-bold">
+                  Total
+                </span>
 
-            <span className="text-xl font-bold text-amber-200 md:text-3xl">
-              ${total.toLocaleString()}
-            </span>
+                <span className="text-3xl font-bold text-amber-200">
+                  ${total.toLocaleString("es-AR")}
+                </span>
 
-          </div>
+              </div>
 
             </div>
 
@@ -358,7 +305,7 @@ setIsCompletedModalOpen(true);
 
           <button
             onClick={handleConfirmSale}
-            className="mt-6 w-full rounded-xl bg-amber-200 py-3 text-base font-semibold text-black transition hover:bg-amber-300 md:py-4 md:text-lg"
+            className="mt-6 w-full rounded-xl bg-amber-200 py-4 text-lg font-semibold text-black transition hover:bg-amber-300"
           >
             Confirmar Venta
           </button>
@@ -366,15 +313,19 @@ setIsCompletedModalOpen(true);
         </div>
 
       </div>
-<SaleCompletedModal
-  isOpen={isCompletedModalOpen}
-  sale={completedSale}
-  onClose={() => {
-    setIsCompletedModalOpen(false);
-    setCompletedSale(null);
-  }}
-  onDownload={() => generateSalePdf(completedSale)}
-/>
+
+      <SaleCompletedModal
+        isOpen={isCompletedModalOpen}
+        sale={completedSale}
+        onClose={() => {
+          setIsCompletedModalOpen(false);
+          setCompletedSale(null);
+        }}
+        onDownload={() =>
+          generateSalePdf(completedSale)
+        }
+      />
+
     </div>
   );
 }

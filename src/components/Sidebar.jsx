@@ -6,129 +6,197 @@ import {
   Receipt,
   BarChart3,
   Settings,
-  Users
+  Users,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 
 const menu = [
   {
-    name: "Dashboard",
-    path: "/",
-    icon: LayoutDashboard,
+    section: "GENERAL",
+    items: [
+      {
+        name: "Dashboard",
+        path: "/admin",
+        icon: LayoutDashboard,
+      },
+    ],
   },
   {
-    name: "Productos",
-    path: "/products",
-    icon: Package,
+    section: "VENTAS",
+    items: [
+      {
+        name: "Nueva Venta",
+        path: "/admin/orders",
+        icon: ShoppingCart,
+      },
+      {
+        name: "Pedidos",
+        path: "/admin/store-orders",
+        icon: Receipt,
+      },
+      {
+        name: "Ventas",
+        path: "/admin/sales",
+        icon: Receipt,
+      },
+    ],
   },
   {
-    name: "Nueva Venta",
-    path: "/orders",
-    icon: ShoppingCart,
+    section: "INVENTARIO",
+    items: [
+      {
+        name: "Productos",
+        path: "/admin/products",
+        icon: Package,
+      },
+      {
+        name: "Compras",
+        path: "/admin/purchases",
+        icon: Truck,
+      },
+      {
+        name: "Proveedores",
+        path: "/admin/providers",
+        icon: Users,
+      },
+    ],
   },
   {
-    name: "Compras",
-    path: "/purchases",
-    icon: Truck,
+    section: "CRM",
+    items: [
+      {
+        name: "Mayoristas",
+        path: "/admin/wholesale",
+        icon: Users,
+      },
+    ],
   },
   {
-  name: "Proveedores",
-  path: "/providers",
-  icon: Users,
-},
-  {
-    name: "Ventas",
-    path: "/sales",
-    icon: Receipt,
+    section: "ANÁLISIS",
+    items: [
+      {
+        name: "Estadísticas",
+        path: "/admin/statistics",
+        icon: BarChart3,
+      },
+    ],
   },
   {
-    name: "Estadísticas",
-    path: "/statistics",
-    icon: BarChart3,
-  },
-  {
-    name: "Configuración",
-    path: "/settings",
-    icon: Settings,
+    section: "SISTEMA",
+    items: [
+      {
+        name: "Configuración",
+        path: "/admin/settings",
+        icon: Settings,
+      },
+    ],
   },
 ];
 
-export default function Sidebar() {
-
-  const [collapsed, setCollapsed] = useState(false);
-
+function Sidebar({
+  collapsed,
+  setCollapsed,
+}) {
   return (
- <aside
-  className={`${
-    collapsed ? "w-20 p-3" : "w-72 p-6"
-  } min-h-screen border-r border-zinc-800 bg-zinc-900 transition-all duration-300`}
->
-      <div className="mb-10 flex items-center justify-between">
-
-  {!collapsed && (
-    <h1 className="text-4xl font-bold text-amber-200">
-      Soki
-    </h1>
-  )}
-
-  <button
-    onClick={() => setCollapsed(!collapsed)}
-    className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white"
-  >
-    {collapsed ? (
-      <PanelLeftOpen size={22} />
-    ) : (
-      <PanelLeftClose size={22} />
-    )}
-  </button>
-
-</div>
-
-          <nav
-      className={`${
-        collapsed ? "space-y-4" : "space-y-2"
+    <aside
+      className={`fixed left-0 top-0 z-50 flex h-screen flex-col border-r border-zinc-800 bg-zinc-900 transition-all duration-300 ${
+        collapsed ? "w-20" : "w-72"
       }`}
     >
+      {/* CABECERA */}
 
-        {menu.map((item) => {
+      <div
+        className={`flex h-20 items-center border-b border-zinc-800 ${
+          collapsed
+            ? "justify-center px-3"
+            : "justify-between px-6"
+        }`}
+      >
+        {!collapsed && (
+          <h1 className="text-4xl font-bold text-amber-200">
+            Soki
+          </h1>
+        )}
 
-          const Icon = item.icon;
+        <button
+          onClick={() =>
+            setCollapsed(!collapsed)
+          }
+          className="rounded-lg p-2 text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+        >
+          {collapsed ? (
+            <PanelLeftOpen size={22} />
+          ) : (
+            <PanelLeftClose size={22} />
+          )}
+        </button>
+      </div>
 
-          return (
+      {/* MENÚ */}
 
-            <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center ${
-                collapsed ? "justify-center" : "justify-start gap-3"
-              } w-full rounded-xl px-4 py-3 transition-all duration-200 ${
-                isActive
-                  ? "bg-amber-200 font-semibold text-black"
-                  : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
-              }`
-            }
+      <div className="flex-1 overflow-y-auto px-3 py-5">
+
+        {menu.map((group) => (
+
+          <div
+            key={group.section}
+            className="mb-8"
           >
-
-            <Icon className="flex-shrink-0" size={20} />
-
             {!collapsed && (
-              <span className="whitespace-nowrap">
-                {item.name}
-              </span>
+              <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">
+                {group.section}
+              </p>
             )}
 
-          </NavLink>
+            <div className="space-y-2">
 
-          );
+              {group.items.map((item) => {
 
-        })}
+                const Icon = item.icon;
 
-      </nav>
+                return (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.path === "/admin"}
+                    className={({ isActive }) =>
+                      `flex items-center rounded-xl py-3 transition ${
+                        collapsed
+                          ? "justify-center px-2"
+                          : "gap-3 px-4"
+                      } ${
+                        isActive
+                          ? "bg-amber-200 font-semibold text-black"
+                          : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                      }`
+                    }
+                  >
+                    <Icon
+                      size={20}
+                      className="flex-shrink-0"
+                    />
+
+                    {!collapsed && (
+                      <span>{item.name}</span>
+                    )}
+                  </NavLink>
+                );
+
+              })}
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
 
     </aside>
   );
 }
+
+export default Sidebar;

@@ -14,10 +14,9 @@ export default function Modal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl"
+        className="flex w-full max-w-md max-h-[90vh] flex-col overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 shadow-2xl"
       >
-        <div className="mb-6 border-b border-zinc-800 pb-4">
-
+        <div className="border-b border-zinc-800 p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200">
             SOKI
           </p>
@@ -31,11 +30,11 @@ export default function Modal({
               {description}
             </p>
           )}
-
         </div>
 
-        {children}
-
+        <div className="overflow-y-auto p-6">
+          {children}
+        </div>
       </div>
     </div>
   );

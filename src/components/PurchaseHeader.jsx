@@ -1,11 +1,11 @@
-import { useInventory } from "../context/InventoryContext";
+import { useProviders } from "../context/ProvidersContext";
 
 export default function PurchaseHeader({
   purchase,
   setPurchase,
 }) {
 
-  const { providers } = useInventory();
+const { providers } = useProviders();
 
   function update(field, value) {
     setPurchase((prev) => ({

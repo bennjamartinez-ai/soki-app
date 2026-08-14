@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
-import { useInventory } from "../context/InventoryContext";
-import ProviderModal from "../components/ProviderModal";
+import { useProviders } from "../context/ProvidersContext";import ProviderModal from "../components/ProviderModal";
 import ConfirmModal from "../components/ConfirmModal";
 import { toast } from "react-hot-toast";
 
 export default function Providers() {
 
-  const {
-    providers,
-    setProviders,
-  } = useInventory();
+ const {
+  providers,
+  addProvider,
+  editProvider,
+  removeProvider,
+} = useProviders();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProvider, setEditingProvider] = useState(null);
@@ -31,47 +32,43 @@ const [providerToDelete, setProviderToDelete] = useState(null);
   setProviderToDelete(id);
 }
 
-function confirmDeleteProvider() {
-  setProviders((prev) =>
-    prev.filter(
-      (provider) => provider.id !== providerToDelete
-    )
-  );
+async function confirmDeleteProvider() {
+  try {
+    await removeProvider(providerToDelete);
 
-  toast.success("Proveedor eliminado.");
+    setProviderToDelete(null);
+
+    toast.success("Proveedor eliminado.");
+  } catch (error) {
+    console.error(error);
+    toast.error("No se pudo eliminar el proveedor.");
+  }
 }
 
-  function handleSave(providerData) {
-
+  async function handleSave(providerData) {
+  try {
     if (editingProvider) {
-
-      setProviders((prev) =>
-        prev.map((provider) =>
-          provider.id === editingProvider.id
-            ? {
-                ...provider,
-                ...providerData,
-              }
-            : provider
-        )
+      await editProvider(
+        editingProvider.id,
+        providerData
       );
-
     } else {
-
-      setProviders((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          ...providerData,
-        },
-      ]);
-
+      await addProvider(providerData);
     }
 
     setIsModalOpen(false);
     setEditingProvider(null);
 
+    toast.success(
+      editingProvider
+        ? "Proveedor actualizado."
+        : "Proveedor creado."
+    );
+  } catch (error) {
+    console.error(error);
+    toast.error("No se pudo guardar el proveedor.");
   }
+}
 
   return (
     <div className="space-y-8">

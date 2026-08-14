@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { Search, Plus } from "lucide-react";
-import { useInventory } from "../context/InventoryContext";
+import { useProducts } from "../context/ProductsContext";
 import ProductModal from "./ProductModal";
 
 export default function AddPurchaseProduct({
   purchase,
   setPurchase,
 }) {
-  const {
-    products,
-    setProducts,
-  } = useInventory();
+const {
+  products,
+  createProduct,
+} = useProducts();
   const [search, setSearch] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -27,32 +27,30 @@ export default function AddPurchaseProduct({
     setCost(product.cost || 0);
   }
 
-  function handleCreateProduct(product) {
+  async function handleCreateProduct(product) {
+  try {
+    await createProduct(product);
 
-  const newProduct = {
-    id: Date.now(),
-    ...product,
-  };
+    const newProduct = {
+      ...product,
+    };
 
-  setProducts((prev) => [
-    ...prev,
-    newProduct,
-  ]);
+    setPurchase((prev) => ({
+      ...prev,
+      items: [
+        ...prev.items,
+        {
+          ...newProduct,
+          quantity: 1,
+          cost: newProduct.cost,
+        },
+      ],
+    }));
 
-  setPurchase((prev) => ({
-    ...prev,
-    items: [
-      ...prev.items,
-      {
-        ...newProduct,
-        quantity: 1,
-        cost: newProduct.cost,
-      },
-    ],
-  }));
-
-  setIsModalOpen(false);
-
+    setIsModalOpen(false);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
   function handleAddProduct() {

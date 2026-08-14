@@ -1,1 +1,163 @@
 @import "tailwindcss";
+
+/* ==============================
+   SOKI DESIGN SYSTEM
+============================== */
+
+@theme {
+
+  /* ---------- COLORES ---------- */
+
+  --color-soki-background: #F8F4EE;
+  --color-soki-surface: #F2EBE2;
+  --color-soki-beige: #D8C7B4;
+  --color-soki-brown: #8C6B4B;
+
+  --color-soki-dark: #2D2A26;
+
+  --color-soki-text: #4B433D;
+  --color-soki-muted: #8B837D;
+  --color-soki-border: #E8DDD0;
+
+  /* ---------- TIPOGRAFÍAS ---------- */
+
+  --font-display:
+    "Chewy",
+    cursive;
+
+  --font-editorial:
+    "Cormorant Garamond",
+    serif;
+
+  --font-body:
+    "Inter",
+    sans-serif;
+
+  /* ---------- RADIOS ---------- */
+
+  --radius-card: 28px;
+  --radius-button: 9999px;
+
+  /* ---------- SOMBRAS ---------- */
+
+  --shadow-soft:
+    0 10px 35px rgba(0,0,0,.06);
+
+  --shadow-hover:
+    0 18px 45px rgba(0,0,0,.10);
+
+}
+
+/* ==============================
+   BASE
+============================== */
+
+html{
+
+  scroll-behavior:smooth;
+
+}
+
+body{
+
+  background:var(--color-soki-background);
+
+  color:var(--color-soki-text);
+
+  font-family:var(--font-body);
+
+  text-rendering:optimizeLegibility;
+
+  -webkit-font-smoothing:antialiased;
+
+  -moz-osx-font-smoothing:grayscale;
+
+}
+
+/* ==============================
+   SELECCIÓN
+============================== */
+
+::selection{
+
+  background:var(--color-soki-dark);
+
+  color:white;
+
+}
+
+/* ==============================
+   SCROLL
+============================== */
+
+::-webkit-scrollbar{
+
+  width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+  background:#f3eee7;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+  background:#d8c7b4;
+
+  border-radius:999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+  background:#b99d80;
+
+}
+
+/* ==============================
+   ELEMENTOS
+============================== */
+
+a{
+
+  transition:.2s;
+
+}
+
+button{
+
+  cursor:pointer;
+
+}
+
+img{
+
+  user-select:none;
+
+  -webkit-user-drag:none;
+
+}
+
+/* ==============================
+   UTILIDADES
+============================== */
+
+.font-display{
+
+  font-family:"Chewy", cursive;
+
+}
+
+.font-editorial{
+
+  font-family:"Cormorant Garamond", serif;
+
+}
+
+.font-body{
+
+  font-family:"Inter", sans-serif;
+
+}

@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { useInventory } from "../context/InventoryContext";
 import { Plus, Search } from "lucide-react";
+import { toast } from "react-hot-toast";
+
+import { useProducts } from "../context/ProductsContext";
 
 import ProductModal from "../components/ProductModal";
 import ProductTable from "../components/ProductTable";
 import CategoryModal from "../components/CategoryModal";
 import StatCard from "../components/StatCard";
 import ConfirmModal from "../components/ConfirmModal";
-import { toast } from "react-hot-toast";
 
 export default function Products() {
-
   const {
     products,
-    setProducts,
-    categories,
-    setCategories,
-  } = useInventory();
+    createProduct,
+    updateProduct,
+    deleteProduct,
+  } = useProducts();
 
   const [search, setSearch] = useState("");
 
@@ -24,43 +24,78 @@ export default function Products() {
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const [editingProduct, setEditingProduct] = useState(null);
-const [productToDelete, setProductToDelete] = useState(null);
+  const [productToDelete, setProductToDelete] = useState(null);
 
-  function handleAddProduct(newProduct) {
-    if (editingProduct) {
-      setProducts((prev) =>
-        prev.map((product) =>
-          product.id === editingProduct.id
-            ? { ...editingProduct, ...newProduct }
-            : product
-        )
-      );
+async function handleAddProduct(newProduct) {
 
-      setEditingProduct(null);
-    } else {
-      setProducts((prev) => [
-        ...prev,
-        {
-          id: Date.now(),
-          ...newProduct,
-        },
-      ]);
-    }
+  const duplicatedFeaturedOrder =
+    newProduct.featured &&
+    products.some(
+      (product) =>
+        product.id !== editingProduct?.id &&
+        product.featured &&
+        product.featured_order ===
+          newProduct.featured_order
+    );
 
-    setIsModalOpen(false);
+  if (duplicatedFeaturedOrder) {
+
+    toast.error(
+      `Ya existe un producto con el orden #${newProduct.featured_order}.`
+    );
+
+    return;
+
   }
 
+  try {
+
+    if (editingProduct) {
+
+      await updateProduct(
+        editingProduct.id,
+        newProduct
+      );
+
+    } else {
+
+      await createProduct(
+        newProduct
+      );
+
+    }
+
+    setEditingProduct(null);
+
+    setIsModalOpen(false);
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast.error(
+      "No se pudo guardar el producto."
+    );
+
+  }
+
+}
+
   function handleDeleteProduct(id) {
-  setProductToDelete(id);
-}
+    setProductToDelete(id);
+  }
 
-function confirmDeleteProduct() {
-  setProducts((prev) =>
-    prev.filter((product) => product.id !== productToDelete)
-  );
+  async function confirmDeleteProduct() {
+    try {
+      await deleteProduct(productToDelete);
 
-  toast.success("Producto eliminado.");
-}
+      toast.success("Producto eliminado.");
+      setProductToDelete(null);
+    } catch (error) {
+      console.error(error);
+      toast.error("No se pudo eliminar el producto.");
+    }
+  }
 
   function handleEditProduct(product) {
     setEditingProduct(product);
@@ -89,10 +124,8 @@ function confirmDeleteProduct() {
 
   return (
     <div className="space-y-8">
-
-<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-
           <h1 className="text-3xl font-bold">
             Productos
           </h1>
@@ -100,7 +133,6 @@ function confirmDeleteProduct() {
           <p className="mt-1 text-zinc-400">
             Gestioná el inventario de Soki.
           </p>
-
         </div>
 
         <button
@@ -108,14 +140,14 @@ function confirmDeleteProduct() {
             setEditingProduct(null);
             setIsModalOpen(true);
           }}
-className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200 px-5 py-3 font-semibold text-black transition hover:bg-amber-300 md:w-auto"        >
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200 px-5 py-3 font-semibold text-black transition hover:bg-amber-300 md:w-auto"
+        >
           <Plus size={18} />
           Nuevo Producto
         </button>
-
       </div>
 
-<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard title="Productos" value={totalProducts} />
 
         <StatCard
@@ -129,11 +161,10 @@ className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200
           value={`$${inventoryValue.toLocaleString()}`}
           color="text-green-400"
         />
-
       </div>
 
-<div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-<div className="relative w-full md:max-w-md md:flex-1">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="relative w-full md:max-w-md md:flex-1">
           <Search
             size={18}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -146,15 +177,14 @@ className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-200
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-xl border border-zinc-800 bg-zinc-900 py-3 pl-11 pr-4 outline-none focus:border-amber-200"
           />
-
         </div>
 
         <button
           onClick={() => setIsCategoryModalOpen(true)}
-className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 px-5 py-3 font-semibold text-white transition hover:bg-amber-200 hover:text-black md:w-auto"        >
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 px-5 py-3 font-semibold text-white transition hover:bg-amber-200 hover:text-black md:w-auto"
+        >
           📂 Categorías
         </button>
-
       </div>
 
       <ProductTable
@@ -170,11 +200,9 @@ className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 
         product={editingProduct}
       />
 
-      <CategoryModal
+        <CategoryModal
         isOpen={isCategoryModalOpen}
         onClose={() => setIsCategoryModalOpen(false)}
-        categories={categories}
-        setCategories={setCategories}
       />
 
       <ConfirmModal
@@ -185,7 +213,5 @@ className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-800 
         message="¿Estás seguro de que querés eliminar este producto? Esta acción no se puede deshacer."
       />
     </div>
-    
   );
-  
 }
