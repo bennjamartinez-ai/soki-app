@@ -11,8 +11,7 @@ function Hero() {
 
       <div className="absolute right-[-120px] bottom-[-180px] h-[420px] w-[420px] rounded-full bg-soki-brown/10 blur-3xl" />
 
-      <div className="mx-auto grid min-h-[85vh] max-w-[1800px] items-center gap-24 px-8 lg:grid-cols-2">
-
+<div className="mx-auto grid min-h-[70vh] max-w-[1800px] items-center gap-12 px-6 py-12 lg:min-h-[85vh] lg:grid-cols-2 lg:gap-24 lg:px-8">
         {/* TEXTO */}
 
         <div className="relative z-10 max-w-2xl">
@@ -21,22 +20,19 @@ function Hero() {
             NUEVA COLECCIÓN
           </p>
 
-          <h1 className="font-display text-7xl leading-[0.95] text-soki-dark lg:text-8xl">
-            Tu estilo
+<h1 className="font-display text-5xl leading-[0.95] text-soki-dark sm:text-6xl lg:text-8xl">            Tu estilo
             <br />
             empieza por
             <br />
             los detalles.
           </h1>
 
-          <p className="mt-10 max-w-xl font-body text-xl leading-9 text-soki-muted">
-            Medias y accesorios diseñados para acompañarte
+<p className="mt-8 max-w-xl font-body text-base leading-7 text-soki-muted sm:text-lg lg:mt-10 lg:text-xl lg:leading-9">            Medias y accesorios diseñados para acompañarte
             todos los días con comodidad, calidad y un estilo
             que se adapta a vos.
           </p>
 
-          <div className="mt-14 flex flex-wrap gap-4">
-
+<div className="mt-10 flex flex-col gap-4 sm:flex-row lg:mt-14">
             <Link
               to="/productos"
               className="flex items-center gap-2 rounded-full bg-soki-dark px-8 py-4 font-body font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
@@ -58,18 +54,16 @@ function Hero() {
 
         {/* IMAGEN */}
 
-        <div className="flex items-center justify-center">
+       <div className="order-first flex items-center justify-center lg:order-last">
 
-          <div className="relative flex h-[560px] w-[500px] items-center justify-center">
+  <div className="relative flex h-[300px] w-[280px] items-center justify-center sm:h-[420px] sm:w-[360px] lg:h-[560px] lg:w-[500px]">
 
             {/* Mancha */}
 
-            <div className="absolute h-[460px] w-[460px] rounded-full bg-soki-beige/30 blur-3xl" />
-
+<div className="absolute h-[240px] w-[240px] rounded-full bg-soki-beige/30 blur-3xl sm:h-[340px] sm:w-[340px] lg:h-[460px] lg:w-[460px]" />
             {/* Contenedor */}
 
-            <div className="relative flex h-[520px] w-[460px] items-center justify-center overflow-hidden rounded-[48px] bg-soki-surface">
-
+<div className="relative flex h-[280px] w-[240px] items-center justify-center overflow-hidden rounded-[32px] bg-soki-surface sm:h-[380px] sm:w-[320px] lg:h-[520px] lg:w-[460px] lg:rounded-[48px]">
               <span className="font-editorial text-6xl text-soki-brown/60">
                 SOKI
               </span>

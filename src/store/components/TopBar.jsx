@@ -52,16 +52,16 @@ export default function TopBar() {
       <div className="mx-auto flex h-11 max-w-[1800px] items-center justify-between px-8">
 
         <button
-          onClick={previous}
-          className="rounded-full p-1 transition hover:bg-white"
-        >
-          <ChevronLeft size={18} />
-        </button>
+  onClick={previous}
+  className="hidden rounded-full p-1 transition hover:bg-white md:block"
+>
+  <ChevronLeft size={18} />
+</button>
 
         <div className="flex flex-col items-center">
 
-          <p
-            className={`text-sm font-medium tracking-wide transition-all duration-200 ${
+            <p
+  className={`px-2 text-center text-xs font-medium leading-tight tracking-wide transition-all duration-200 md:text-sm ${
               visible
                 ? "translate-y-0 opacity-100"
                 : "-translate-y-2 opacity-0"
@@ -91,11 +91,11 @@ export default function TopBar() {
         </div>
 
         <button
-          onClick={next}
-          className="rounded-full p-1 transition hover:bg-white"
-        >
-          <ChevronRight size={18} />
-        </button>
+  onClick={next}
+  className="hidden rounded-full p-1 transition hover:bg-white md:block"
+>
+  <ChevronRight size={18} />
+</button>
 
       </div>
 

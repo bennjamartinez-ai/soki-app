@@ -1,17 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
-import {
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";import {
+  Menu,
   Search,
   ShoppingCart,
 } from "lucide-react";
 
 import { useCart } from "../../context/CartContext";
 import UserMenu from "./UserMenu";
+import MobileMenu from "./MobileMenu";
 
 function Navbar() {
   const { cart } = useCart();
 
-  const { pathname } = useLocation();
-
+const [mobileMenuOpen, setMobileMenuOpen] =
+  useState(false);
   const totalItems = cart.reduce(
     (total, item) => total + item.quantity,
     0
@@ -24,11 +26,21 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md">
 
-      <div className="mx-auto flex h-20 max-w-[1800px] items-center justify-between px-8">
-
+<div className="mx-auto flex h-20 max-w-[1800px] items-center px-4 lg:px-8">
         {/* IZQUIERDA */}
 
-        <div className="flex flex-1 items-center gap-8">
+<div className="flex flex-1 items-center gap-4 lg:gap-8">
+
+<button
+  onClick={() =>
+    setMobileMenuOpen(true)
+  }
+  className="rounded-full p-3 transition hover:bg-zinc-100 lg:hidden"
+>
+
+  <Menu size={24} />
+
+</button>
 
           <Link
             to="/"
@@ -90,8 +102,7 @@ function Navbar() {
 
         {/* DERECHA */}
 
-        <div className="flex items-center gap-4">
-
+<div className="ml-auto flex items-center gap-2 lg:gap-4">
           {/* BUSCADOR */}
 
 {pathname === "/" && (
@@ -115,7 +126,11 @@ function Navbar() {
 
           {/* USUARIO */}
 
-          <UserMenu />
+          <div className="hidden lg:block">
+
+  <UserMenu />
+
+</div>
 
           {/* CARRITO */}
 
@@ -141,6 +156,13 @@ function Navbar() {
         </div>
 
       </div>
+
+        <MobileMenu
+  open={mobileMenuOpen}
+  onClose={() =>
+    setMobileMenuOpen(false)
+  }
+/>
 
     </header>
   );
