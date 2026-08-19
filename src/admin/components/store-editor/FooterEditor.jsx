@@ -3,10 +3,9 @@ import { useStoreSettings } from "../../../context/StoreSettingsContext";
 import {
   TextField,
   TextareaField,
-  SwitchField,
 } from "./fields";
 
-export default function BannerEditor() {
+export default function FooterEditor() {
   const {
     settings,
     updateDraft,
@@ -28,11 +27,11 @@ export default function BannerEditor() {
         <div>
 
           <h1 className="text-3xl font-bold">
-            Banner promocional
+            Footer
           </h1>
 
           <p className="mt-2 text-zinc-400">
-            Editá el banner promocional de la tienda.
+            Editá la información del pie de página.
           </p>
 
         </div>
@@ -66,51 +65,13 @@ export default function BannerEditor() {
 
       <div className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
 
-        {/* Visibilidad */}
-
-        <SwitchField
-          label="Mostrar tarjeta"
-          checked={
-            settings.banner_show === "true"
-          }
-          onChange={(checked) =>
-            update(
-              "banner_show",
-              checked ? "true" : "false"
-            )
-          }
-        />
-
-        <TextField
-          label="Badge"
-          value={settings.banner_badge}
-          onChange={(value) =>
-            update(
-              "banner_badge",
-              value
-            )
-          }
-        />
-
-        <TextareaField
-          label="Título"
-          rows={3}
-          value={settings.banner_title}
-          onChange={(value) =>
-            update(
-              "banner_title",
-              value
-            )
-          }
-        />
-
         <TextareaField
           label="Descripción"
-          rows={5}
-          value={settings.banner_description}
+          rows={4}
+          value={settings.footer_description}
           onChange={(value) =>
             update(
-              "banner_description",
+              "footer_description",
               value
             )
           }
@@ -119,26 +80,22 @@ export default function BannerEditor() {
         <div className="grid gap-6 md:grid-cols-2">
 
           <TextField
-            label="Texto del botón"
-            value={
-              settings.banner_button_text
-            }
+            label="Ubicación"
+            value={settings.footer_location}
             onChange={(value) =>
               update(
-                "banner_button_text",
+                "footer_location",
                 value
               )
             }
           />
 
           <TextField
-            label="Link del botón"
-            value={
-              settings.banner_button_link
-            }
+            label="Teléfono"
+            value={settings.footer_phone}
             onChange={(value) =>
               update(
-                "banner_button_link",
+                "footer_phone",
                 value
               )
             }
@@ -146,18 +103,61 @@ export default function BannerEditor() {
 
         </div>
 
-        <SwitchField
-          label="Mostrar botón"
-          checked={
-            settings.banner_show_button ===
-            "true"
-          }
-          onChange={(checked) =>
+        <div className="grid gap-6 md:grid-cols-2">
+
+          <TextField
+            label="Email"
+            value={settings.footer_email}
+            onChange={(value) =>
+              update(
+                "footer_email",
+                value
+              )
+            }
+          />
+
+          <TextField
+            label="Instagram"
+            value={settings.footer_instagram}
+            onChange={(value) =>
+              update(
+                "footer_instagram",
+                value
+              )
+            }
+          />
+
+        </div>
+
+        <TextField
+          label="Facebook"
+          value={settings.footer_facebook}
+          onChange={(value) =>
             update(
-              "banner_show_button",
-              checked
-                ? "true"
-                : "false"
+              "footer_facebook",
+              value
+            )
+          }
+        />
+
+        <TextField
+          label="Copyright"
+          value={settings.footer_copyright}
+          onChange={(value) =>
+            update(
+              "footer_copyright",
+              value
+            )
+          }
+        />
+
+        <TextField
+          label="Firma"
+          value={settings.footer_signature}
+          onChange={(value) =>
+            update(
+              "footer_signature",
+              value
             )
           }
         />

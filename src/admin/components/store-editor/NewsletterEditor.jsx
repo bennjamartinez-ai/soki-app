@@ -3,10 +3,9 @@ import { useStoreSettings } from "../../../context/StoreSettingsContext";
 import {
   TextField,
   TextareaField,
-  SwitchField,
 } from "./fields";
 
-export default function BannerEditor() {
+export default function NewsletterEditor() {
   const {
     settings,
     updateDraft,
@@ -28,11 +27,11 @@ export default function BannerEditor() {
         <div>
 
           <h1 className="text-3xl font-bold">
-            Banner promocional
+            Newsletter
           </h1>
 
           <p className="mt-2 text-zinc-400">
-            Editá el banner promocional de la tienda.
+            Editá la sección de suscripción.
           </p>
 
         </div>
@@ -66,27 +65,12 @@ export default function BannerEditor() {
 
       <div className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
 
-        {/* Visibilidad */}
-
-        <SwitchField
-          label="Mostrar tarjeta"
-          checked={
-            settings.banner_show === "true"
-          }
-          onChange={(checked) =>
-            update(
-              "banner_show",
-              checked ? "true" : "false"
-            )
-          }
-        />
-
         <TextField
           label="Badge"
-          value={settings.banner_badge}
+          value={settings.newsletter_badge}
           onChange={(value) =>
             update(
-              "banner_badge",
+              "newsletter_badge",
               value
             )
           }
@@ -95,10 +79,10 @@ export default function BannerEditor() {
         <TextareaField
           label="Título"
           rows={3}
-          value={settings.banner_title}
+          value={settings.newsletter_title}
           onChange={(value) =>
             update(
-              "banner_title",
+              "newsletter_title",
               value
             )
           }
@@ -106,58 +90,40 @@ export default function BannerEditor() {
 
         <TextareaField
           label="Descripción"
-          rows={5}
-          value={settings.banner_description}
+          rows={4}
+          value={
+            settings.newsletter_description
+          }
           onChange={(value) =>
             update(
-              "banner_description",
+              "newsletter_description",
               value
             )
           }
         />
 
-        <div className="grid gap-6 md:grid-cols-2">
-
-          <TextField
-            label="Texto del botón"
-            value={
-              settings.banner_button_text
-            }
-            onChange={(value) =>
-              update(
-                "banner_button_text",
-                value
-              )
-            }
-          />
-
-          <TextField
-            label="Link del botón"
-            value={
-              settings.banner_button_link
-            }
-            onChange={(value) =>
-              update(
-                "banner_button_link",
-                value
-              )
-            }
-          />
-
-        </div>
-
-        <SwitchField
-          label="Mostrar botón"
-          checked={
-            settings.banner_show_button ===
-            "true"
+        <TextField
+          label="Placeholder"
+          value={
+            settings.newsletter_placeholder
           }
-          onChange={(checked) =>
+          onChange={(value) =>
             update(
-              "banner_show_button",
-              checked
-                ? "true"
-                : "false"
+              "newsletter_placeholder",
+              value
+            )
+          }
+        />
+
+        <TextField
+          label="Texto del botón"
+          value={
+            settings.newsletter_button_text
+          }
+          onChange={(value) =>
+            update(
+              "newsletter_button_text",
+              value
             )
           }
         />

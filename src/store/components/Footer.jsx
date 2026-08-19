@@ -1,72 +1,41 @@
-import { Link } from "react-router-dom";
 import {
   Mail,
   MapPin,
   Phone,
-  ArrowRight,
 } from "lucide-react";
 
+import { Link } from "react-router-dom";
+
+import { useStoreSettings } from "../../context/StoreSettingsContext";
+
+import Newsletter from "./Newsletter";
+
+function normalizeUrl(url) {
+  if (!url) return "#";
+
+  if (
+    url.startsWith("http://") ||
+    url.startsWith("https://")
+  ) {
+    return url;
+  }
+
+  return `https://${url}`;
+}
+
 function Footer() {
+  const { settings } = useStoreSettings();
+
   return (
     <footer className="mt-20 bg-soki-dark text-white">
 
-      {/* NEWSLETTER */}
-
-      <section className="border-b border-white/10">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-20">
-
-          <div className="max-w-2xl">
-
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-soki-beige">
-              SOKI CLUB
-            </p>
-
-            <h2 className="mt-4 text-4xl font-bold leading-tight lg:text-6xl">
-              No te pierdas
-              <br />
-              ninguna novedad.
-            </h2>
-
-            <p className="mt-6 max-w-lg text-base leading-7 text-zinc-300 lg:text-lg">
-              Recibí lanzamientos, descuentos exclusivos y novedades antes que nadie.
-            </p>
-
-          </div>
-
-          <div className="w-full max-w-xl">
-
-            <div className="flex flex-col overflow-hidden rounded-2xl bg-white sm:flex-row sm:rounded-full">
-
-              <input
-                type="email"
-                placeholder="Tu correo electrónico"
-                className="flex-1 px-6 py-4 text-black outline-none placeholder:text-zinc-400"
-              />
-
-              <button className="flex items-center justify-center gap-2 bg-soki-brown px-8 py-4 font-semibold transition hover:bg-[#755537]">
-
-                Suscribirme
-
-                <ArrowRight size={18} />
-
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* CONTENIDO */}
+      <Newsletter />
 
       <section>
 
         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:px-8 lg:py-20">
 
-          {/* MARCA */}
+          {/* Marca */}
 
           <div>
 
@@ -75,31 +44,40 @@ function Footer() {
             </h2>
 
             <p className="mt-6 max-w-sm leading-7 text-zinc-400">
-              Diseñamos medias y accesorios para acompañarte todos los días con comodidad, calidad y un estilo propio.
+              {settings.footer_description}
             </p>
 
             <div className="mt-8 space-y-4">
 
               <div className="flex items-center gap-3 text-zinc-300">
                 <MapPin size={18} />
-                <span>San Rafael, Mendoza</span>
+
+                <span>
+                  {settings.footer_location}
+                </span>
               </div>
 
               <div className="flex items-center gap-3 text-zinc-300">
                 <Mail size={18} />
-                <span>hola@soki.com.ar</span>
+
+                <span>
+                  {settings.footer_email}
+                </span>
               </div>
 
               <div className="flex items-center gap-3 text-zinc-300">
                 <Phone size={18} />
-                <span>+54 9 2604 41-0877</span>
+
+                <span>
+                  {settings.footer_phone}
+                </span>
               </div>
 
             </div>
 
           </div>
 
-          {/* COMPRAR */}
+          {/* Comprar */}
 
           <div>
 
@@ -127,7 +105,7 @@ function Footer() {
 
           </div>
 
-          {/* EMPRESA */}
+          {/* Empresa */}
 
           <div>
 
@@ -162,7 +140,7 @@ function Footer() {
 
           </div>
 
-          {/* REDES */}
+          {/* Redes */}
 
           <div>
 
@@ -173,7 +151,9 @@ function Footer() {
             <div className="flex flex-col gap-3 text-zinc-400">
 
               <a
-                href="https://instagram.com/soki.sr"
+                href={normalizeUrl(
+                  settings.footer_instagram
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="transition hover:text-white"
@@ -182,7 +162,9 @@ function Footer() {
               </a>
 
               <a
-                href="https://facebook.com/"
+                href={normalizeUrl(
+                  settings.footer_facebook
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="transition hover:text-white"
@@ -198,18 +180,18 @@ function Footer() {
 
       </section>
 
-      {/* COPYRIGHT */}
+      {/* Copyright */}
 
       <section className="border-t border-white/10">
 
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-center text-sm text-zinc-500 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:text-left">
 
           <p>
-            © 2026 SOKI. Todos los derechos reservados.
+            {settings.footer_copyright}
           </p>
 
           <p>
-            Diseñado con ❤ en San Rafael, Mendoza.
+            {settings.footer_signature}
           </p>
 
         </div>

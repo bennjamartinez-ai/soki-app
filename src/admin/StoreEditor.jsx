@@ -16,6 +16,8 @@ import HeroEditor from "./components/store-editor/HeroEditor";
 import StoreSectionsEditor from "./components/StoreSectionsEditor";
 import BenefitsEditor from "./components/store-editor/BenefitsEditor";
 import BannerEditor from "./components/store-editor/BannerEditor";
+import NewsletterEditor from "./components/store-editor/NewsletterEditor";
+import FooterEditor from "./components/store-editor/FooterEditor";
 
 const pages = [
   {
@@ -49,16 +51,16 @@ const pages = [
     component: null,
   },
   {
-    id: "newsletter",
-    icon: Newspaper,
-    name: "Newsletter",
-    component: null,
-  },
+  id: "newsletter",
+  icon: Newspaper,
+  name: "Newsletter",
+  component: NewsletterEditor,
+},
   {
     id: "footer",
     icon: PanelBottom,
     name: "Footer",
-    component: null,
+    component: FooterEditor,
   },
 ];
 

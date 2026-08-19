@@ -6,6 +6,10 @@ import { useStoreSettings } from "../../context/StoreSettingsContext";
 export default function PromoBanner() {
   const { settings } = useStoreSettings();
 
+  if (settings.banner_show !== "true") {
+    return null;
+  }
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
 
@@ -37,11 +41,10 @@ export default function PromoBanner() {
             {settings.banner_description}
           </p>
 
-          {settings.banner_show_button ===
-            "true" && (
+          {settings.banner_show_button === "true" && (
             <Link
               to={
-                settings.banner_button_link ??
+                settings.banner_button_link ||
                 "/productos"
               }
               className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-black px-7 py-4 font-semibold text-white transition hover:bg-zinc-800"
