@@ -5,7 +5,7 @@ export default function Breadcrumbs({
   items,
 }) {
   return (
-    <nav className="mx-auto mb-8 flex max-w-[1800px] items-center gap-2 px-8 text-sm text-zinc-500">
+    <nav className="mx-auto mb-6 flex max-w-[1800px] items-center gap-2 overflow-x-auto whitespace-nowrap px-4 text-sm text-zinc-500 sm:px-6 lg:mb-8 lg:px-8">
 
       {items.map((item, index) => {
 
@@ -15,7 +15,7 @@ export default function Breadcrumbs({
         return (
           <div
             key={index}
-            className="flex items-center gap-2"
+            className="flex shrink-0 items-center gap-2"
           >
 
             {last ? (
@@ -36,11 +36,15 @@ export default function Breadcrumbs({
             )}
 
             {!last && (
-              <ChevronRight size={14} />
+              <ChevronRight
+                size={14}
+                className="text-zinc-400"
+              />
             )}
 
           </div>
         );
+
       })}
 
     </nav>

@@ -9,9 +9,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 
 import AccountFavorites from "./components/AccountFavorites";
-
 import AccountOrders from "./components/AccountOrders";
-
 import AccountProfile from "./components/AccountProfile";
 
 export default function AccountPage() {
@@ -32,7 +30,7 @@ export default function AccountPage() {
     },
     {
       id: "orders",
-      label: "Mis pedidos",
+      label: "Pedidos",
       icon: ShoppingBag,
     },
     {
@@ -48,39 +46,38 @@ export default function AccountPage() {
         return <AccountFavorites />;
 
       case "orders":
-  return <AccountOrders />;
+        return <AccountOrders />;
 
       case "settings":
         return (
           <>
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-xl font-bold lg:text-2xl">
               Configuración
             </h2>
 
-            <p className="mt-3 text-zinc-600">
+            <p className="mt-2 text-zinc-600">
               Próximamente podrás modificar la configuración de tu cuenta.
             </p>
           </>
         );
 
       default:
-  return <AccountProfile />;
-  
+        return <AccountProfile />;
     }
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-8 py-10">
+    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
 
-      {/* ENCABEZADO */}
+      {/* CABECERA */}
 
-      <div className="mb-8">
+      <header className="mb-8">
 
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-zinc-500">
           MI CUENTA
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold text-zinc-900">
+        <h1 className="mt-2 text-3xl font-bold leading-tight lg:text-4xl">
           Hola,{" "}
           {profile?.full_name ||
             user?.email?.split("@")[0] ||
@@ -88,56 +85,41 @@ export default function AccountPage() {
           👋
         </h1>
 
-      </div>
+      </header>
 
-      <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
+      {/* MENÚ */}
 
-        {/* SIDEBAR */}
+      <nav className="mb-8 flex gap-2 overflow-x-auto pb-2">
 
-        <aside className="h-fit rounded-3xl border border-zinc-200 bg-white p-5">
+        {menu.map((item) => {
+          const Icon = item.icon;
 
-          <div className="space-y-2">
+          return (
+            <button
+              key={item.id}
+              onClick={() => setTab(item.id)}
+              className={`flex shrink-0 items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition ${
+                tab === item.id
+                  ? "bg-black text-white"
+                  : "border border-zinc-200 bg-white hover:border-black"
+              }`}
+            >
+              <Icon size={17} />
+              {item.label}
+            </button>
+          );
+        })}
 
-            {menu.map((item) => {
+      </nav>
 
-              const Icon = item.icon;
+      {/* CONTENIDO */}
 
-              return (
+      <section>
 
-                <button
-                  key={item.id}
-                  onClick={() => setTab(item.id)}
-                  className={`flex w-full items-center gap-3 rounded-2xl px-5 py-4 text-left font-medium transition ${
-                    tab === item.id
-                      ? "bg-black text-white"
-                      : "text-zinc-700 hover:bg-zinc-100"
-                  }`}
-                >
+        {renderContent()}
 
-                  <Icon size={20} />
-
-                  {item.label}
-
-                </button>
-
-              );
-
-            })}
-
-          </div>
-
-        </aside>
-
-        {/* CONTENIDO */}
-
-        <section className="rounded-3xl border border-zinc-200 bg-white p-10">
-
-          {renderContent()}
-
-        </section>
-
-      </div>
+      </section>
 
     </main>
   );
-}       
+}

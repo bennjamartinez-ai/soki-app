@@ -7,7 +7,6 @@ import ProductCard from "./ProductCard";
 
 export default function AccountFavorites() {
   const { favorites } = useFavorites();
-
   const { products } = useProducts();
 
   const favoriteProducts = useMemo(() => {
@@ -18,13 +17,13 @@ export default function AccountFavorites() {
 
   if (favoriteProducts.length === 0) {
     return (
-      <div className="py-12 text-center">
+      <div className="py-14 text-center">
 
-        <h2 className="text-3xl font-bold">
-          Mis Favoritos
+        <h2 className="text-2xl font-bold lg:text-3xl">
+          Mis favoritos
         </h2>
 
-        <p className="mt-4 text-zinc-500">
+        <p className="mt-3 text-zinc-500">
           Todavía no guardaste ningún producto.
         </p>
 
@@ -34,11 +33,12 @@ export default function AccountFavorites() {
 
   return (
     <>
-      <h2 className="mb-8 text-3xl font-bold">
-        Mis Favoritos
+
+      <h2 className="mb-6 text-2xl font-bold lg:mb-8 lg:text-3xl">
+        Mis favoritos
       </h2>
 
-      <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
 
         {favoriteProducts.map((product) => (
 
@@ -50,6 +50,7 @@ export default function AccountFavorites() {
         ))}
 
       </div>
+
     </>
   );
 }

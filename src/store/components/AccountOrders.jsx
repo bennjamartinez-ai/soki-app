@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Package } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
 import { getOrdersByUser } from "../../services/orders";
-import { Link } from "react-router-dom";
+
 import OrderStatusBadge from "./OrderStatusBadge";
 
 export default function AccountOrders() {
@@ -21,7 +22,6 @@ export default function AccountOrders() {
 
     try {
       const data = await getOrdersByUser(user.id);
-
       setOrders(data);
     } catch (error) {
       console.error(error);
@@ -40,15 +40,15 @@ export default function AccountOrders() {
 
   if (orders.length === 0) {
     return (
-      <div className="py-12 text-center">
+      <div className="py-14 text-center">
 
         <Package
-          size={48}
+          size={52}
           className="mx-auto text-zinc-300"
         />
 
-        <h2 className="mt-6 text-3xl font-bold">
-          Mis Pedidos
+        <h2 className="mt-6 text-2xl font-bold lg:text-3xl">
+          Mis pedidos
         </h2>
 
         <p className="mt-3 text-zinc-500">
@@ -61,68 +61,62 @@ export default function AccountOrders() {
 
   return (
     <>
-      <h2 className="mb-8 text-3xl font-bold">
-        Mis Pedidos
+
+      <h2 className="mb-6 text-2xl font-bold lg:mb-8 lg:text-3xl">
+        Mis pedidos
       </h2>
 
-      <div className="space-y-5">
+      <div className="space-y-4">
 
-        {orders.map((order) => {
+        {orders.map((order) => (
 
-          return (
+          <Link
+            key={order.id}
+            to={`/pedido/${order.id}`}
+            className="block rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-black hover:shadow-md lg:p-6"
+          >
 
-  <Link
-    key={order.id}
-    to={`/pedido/${order.id}`}
-    className="block rounded-2xl border border-zinc-200 p-6 transition hover:-translate-y-1 hover:border-black hover:shadow-lg"
-  >
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 
-              <div className="flex items-center justify-between">
+              <div>
 
-                <div>
+                <p className="text-xs uppercase tracking-[0.25em] text-zinc-400">
+                  Pedido
+                </p>
 
-                  <p className="text-sm text-zinc-500">
-                    Pedido
-                  </p>
-
-                  <h3 className="text-xl font-bold">
-                    #{order.id.slice(0, 8)}
-                  </h3>
-
-                </div>
-
-                <OrderStatusBadge
-                status={order.status} 
-                />
+                <h3 className="mt-1 text-xl font-bold">
+                  #{order.id.slice(0, 8)}
+                </h3>
 
               </div>
 
-              <div className="mt-6 flex justify-between text-zinc-600">
+              <OrderStatusBadge
+                status={order.status}
+              />
 
-                <span>
+            </div>
 
-                  {new Date(
-                    order.created_at
-                  ).toLocaleDateString("es-AR")}
+            <div className="mt-6 flex items-center justify-between border-t border-zinc-100 pt-4">
 
-                </span>
+              <span className="text-sm text-zinc-500">
+                {new Date(
+                  order.created_at
+                ).toLocaleDateString("es-AR")}
+              </span>
 
-                <span className="font-semibold">
+              <span className="text-lg font-bold">
+                $
+                {Number(order.total).toLocaleString("es-AR")}
+              </span>
 
-                  $
-                  {Number(order.total).toLocaleString("es-AR")}
+            </div>
 
-                </span>
+          </Link>
 
-              </div>
-
-            </Link>
-
-          );
-
-        })}
+        ))}
 
       </div>
+
     </>
   );
 }

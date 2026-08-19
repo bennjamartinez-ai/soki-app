@@ -7,7 +7,11 @@ import {
 
 import ProductCard from "./ProductCard";
 
-function FeaturedProducts({ products }) {
+function FeaturedProducts({
+  products = [],
+  title = "Productos populares",
+  subtitle = "DESTACADOS",
+}) {
   const slider = useRef(null);
 
   function previous() {
@@ -24,44 +28,52 @@ function FeaturedProducts({ products }) {
     });
   }
 
+  if (products.length === 0) {
+    return null;
+  }
+
   return (
     <section className="pb-24">
 
-      <div className="mx-auto max-w-[1800px] px-8">
+      <div className="mx-auto max-w-[1800px] px-4 sm:px-6 lg:px-8">
 
-        <div className="mb-10 flex items-end justify-between">
+        <div className="mb-8 flex flex-col gap-6 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
 
           <div>
 
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-zinc-500">
-              DESTACADOS
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500 sm:text-sm">
+              {subtitle}
             </p>
 
-            <h2 className="mt-3 text-4xl font-bold">
-              Productos populares
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+              {title}
             </h2>
 
           </div>
 
           <div className="flex items-center gap-3">
 
-            <button
-              onClick={previous}
-              className="rounded-full bg-zinc-100 p-3 transition hover:bg-zinc-200"
-            >
-              <ChevronLeft size={22} />
-            </button>
+            <div className="hidden items-center gap-3 md:flex">
 
-            <button
-              onClick={next}
-              className="rounded-full bg-zinc-100 p-3 transition hover:bg-zinc-200"
-            >
-              <ChevronRight size={22} />
-            </button>
+              <button
+                onClick={previous}
+                className="rounded-full bg-zinc-100 p-3 transition hover:bg-zinc-200"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              <button
+                onClick={next}
+                className="rounded-full bg-zinc-100 p-3 transition hover:bg-zinc-200"
+              >
+                <ChevronRight size={22} />
+              </button>
+
+            </div>
 
             <Link
               to="/productos"
-              className="ml-4 text-sm font-semibold hover:underline"
+              className="text-sm font-semibold hover:underline md:ml-4"
             >
               Ver todos
             </Link>
@@ -72,14 +84,14 @@ function FeaturedProducts({ products }) {
 
         <div
           ref={slider}
-          className="flex gap-6 overflow-x-auto scroll-smooth pb-4 scrollbar-hide"
+          className="flex gap-4 overflow-x-auto scroll-smooth px-4 pb-4 scrollbar-hide sm:gap-6 sm:px-0"
         >
 
           {products.map((product) => (
 
             <div
               key={product.id}
-              className="w-[320px] min-w-[320px]"
+              className="w-[260px] min-w-[260px] sm:w-[300px] sm:min-w-[300px] lg:w-[320px] lg:min-w-[320px]"
             >
 
               <ProductCard product={product} />

@@ -13,38 +13,44 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <main className="mx-auto max-w-7xl px-8 py-20">
-        <h1 className="text-4xl font-bold">
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+
+        <h1 className="text-3xl font-bold lg:text-4xl">
           Carrito
         </h1>
 
-        <p className="mt-6 text-zinc-600">
+        <p className="mt-4 text-zinc-600">
           Tu carrito está vacío.
         </p>
 
         <Link
           to="/productos"
-          className="mt-8 inline-block rounded-xl bg-black px-6 py-3 font-semibold text-white transition hover:opacity-90"
+          className="mt-8 inline-flex h-12 items-center justify-center rounded-full bg-black px-8 font-semibold text-white transition hover:bg-zinc-800"
         >
           Ver productos
         </Link>
+
       </main>
     );
   }
 
   const subtotal = cart.reduce(
-    (sum, item) => sum + Number(item.price) * item.quantity,
+    (sum, item) =>
+      sum + Number(item.price) * item.quantity,
     0
   );
 
   return (
-    <main className="mx-auto max-w-7xl px-8 py-16">
-      <h1 className="mb-10 text-4xl font-bold">
+    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-16">
+
+      <h1 className="mb-8 text-3xl font-bold lg:mb-10 lg:text-4xl">
         Carrito
       </h1>
 
-      <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-6">
+      <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:gap-10">
+
+        <div className="space-y-4 lg:space-y-6">
+
           {cart.map((item) => (
             <CartItem
               key={item.id}
@@ -53,10 +59,13 @@ export default function CartPage() {
               removeFromCart={removeFromCart}
             />
           ))}
+
         </div>
 
         <OrderSummary subtotal={subtotal} />
+
       </div>
+
     </main>
   );
 }

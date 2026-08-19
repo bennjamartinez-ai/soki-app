@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import {
   Shirt,
   Shield,
@@ -31,21 +30,21 @@ function Categories() {
     );
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-10 sm:px-8 sm:py-16">
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
 
-      <div className="mb-10">
+      <div className="mb-8 lg:mb-10">
 
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500 sm:text-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500">
           EXPLORÁ
         </p>
 
-        <h2 className="mt-3 text-3xl font-bold text-zinc-900 sm:text-4xl">
+        <h2 className="mt-3 text-3xl font-bold text-zinc-900 lg:text-4xl">
           Comprá por categoría
         </h2>
 
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">
 
         {featuredCategories.map((category) => {
 
@@ -57,19 +56,19 @@ function Categories() {
             <Link
               key={category.id}
               to={`/categoria/${category.slug}`}
-              className="group flex h-40 flex-col items-center justify-center rounded-3xl border border-zinc-200 bg-white p-6 text-center transition duration-300 hover:-translate-y-1 hover:border-black hover:shadow-xl sm:h-48 sm:p-8"
+              className="group flex h-36 flex-col items-center justify-center rounded-2xl border border-zinc-200 bg-white p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-black hover:shadow-lg lg:h-44 lg:rounded-3xl lg:p-8"
             >
 
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100 transition group-hover:bg-black">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100 transition group-hover:bg-black lg:h-14 lg:w-14">
 
                 <Icon
-                  size={28}
-                  className="text-zinc-800 transition group-hover:text-white"
+                  size={24}
+                  className="text-zinc-800 transition group-hover:text-white lg:h-7 lg:w-7"
                 />
 
               </div>
 
-              <h3 className="text-base font-semibold text-zinc-900 sm:text-xl">
+              <h3 className="text-sm font-semibold text-zinc-900 lg:text-xl">
                 {category.name}
               </h3>
 

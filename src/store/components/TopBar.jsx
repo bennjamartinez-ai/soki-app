@@ -42,26 +42,29 @@ export default function TopBar() {
 
   useEffect(() => {
     const interval = setInterval(next, 5000);
-
     return () => clearInterval(interval);
   });
 
   return (
     <div className="border-b border-zinc-200 bg-[#f5f5f5]">
 
-      <div className="mx-auto flex h-11 max-w-[1800px] items-center justify-between px-8">
+      <div className="relative mx-auto flex h-11 max-w-[1800px] items-center justify-center px-4 lg:px-8">
+
+        {/* Flecha izquierda */}
 
         <button
-  onClick={previous}
-  className="hidden rounded-full p-1 transition hover:bg-white md:block"
->
-  <ChevronLeft size={18} />
-</button>
+          onClick={previous}
+          className="absolute left-6 hidden rounded-full p-1 transition hover:bg-zinc-200 md:block"
+        >
+          <ChevronLeft size={18} />
+        </button>
+
+        {/* Contenido */}
 
         <div className="flex flex-col items-center">
 
-            <p
-  className={`px-2 text-center text-xs font-medium leading-tight tracking-wide transition-all duration-200 md:text-sm ${
+          <p
+            className={`px-2 text-center text-xs font-medium leading-tight tracking-wide transition-all duration-200 md:text-sm ${
               visible
                 ? "translate-y-0 opacity-100"
                 : "-translate-y-2 opacity-0"
@@ -73,7 +76,6 @@ export default function TopBar() {
           <div className="mt-1 flex gap-2">
 
             {messages.map((_, index) => (
-
               <button
                 key={index}
                 onClick={() => change(index)}
@@ -83,19 +85,20 @@ export default function TopBar() {
                     : "w-1.5 bg-zinc-300"
                 }`}
               />
-
             ))}
 
           </div>
 
         </div>
 
+        {/* Flecha derecha */}
+
         <button
-  onClick={next}
-  className="hidden rounded-full p-1 transition hover:bg-white md:block"
->
-  <ChevronRight size={18} />
-</button>
+          onClick={next}
+          className="absolute right-6 hidden rounded-full p-1 transition hover:bg-zinc-200 md:block"
+        >
+          <ChevronRight size={18} />
+        </button>
 
       </div>
 

@@ -6,35 +6,35 @@ export default function ProductInfo({
 }) {
   return (
     <>
-      <p className="text-sm font-medium uppercase tracking-[0.15em] text-zinc-500">
+      <p className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
         {product.category}
       </p>
 
-      <h1 className="mt-2 text-[34px] font-semibold leading-tight text-zinc-900">
+      <h1 className="mt-2 text-3xl font-semibold leading-tight text-zinc-900 lg:text-[34px]">
         {product.name}
       </h1>
 
-      <p className="mt-2 text-zinc-500">
+      <p className="mt-2 text-sm text-zinc-500">
         Producto unisex
       </p>
 
-      <div className="mt-8">
+      <div className="mt-6 lg:mt-8">
         <p className="text-3xl font-semibold">
           ${Number(product.price).toLocaleString("es-AR")}
         </p>
 
-        <p className="mt-2 text-zinc-500">
+        <p className="mt-2 text-sm text-zinc-500">
           Hasta 6 cuotas sin interés
         </p>
 
-        <p className="mt-1 text-sm text-zinc-400">
+        <p className="mt-1 text-xs text-zinc-400">
           Precio sin impuestos nacionales $
           {Math.round(product.price * 0.82).toLocaleString("es-AR")}
         </p>
       </div>
 
       {images.length > 1 && (
-        <div className="mt-10">
+        <div className="mt-8 hidden lg:block">
 
           <p className="mb-4 font-medium">
             Imágenes
@@ -55,13 +55,11 @@ export default function ProductInfo({
                     : "opacity-70 hover:opacity-100"
                 }`}
               >
-
                 <img
                   src={image}
                   alt=""
                   className="h-20 w-20 object-cover"
                 />
-
               </button>
 
             ))}
@@ -71,7 +69,7 @@ export default function ProductInfo({
         </div>
       )}
 
-      <div className="mt-10">
+      <div className="mt-8 lg:mt-10">
 
         {product.stock > 5 && (
           <p className="font-medium text-green-600">

@@ -8,8 +8,9 @@ export default function OrderSummary({ subtotal }) {
   const navigate = useNavigate();
 
   return (
-    <Card className="sticky top-8 h-fit p-8">
-      <h2 className="text-3xl font-bold tracking-tight">
+    <Card className="h-fit p-5 lg:sticky lg:top-8 lg:p-8">
+
+      <h2 className="text-2xl font-bold tracking-tight lg:text-3xl">
         Resumen del pedido
       </h2>
 
@@ -17,7 +18,8 @@ export default function OrderSummary({ subtotal }) {
         Revisá tu compra antes de finalizar.
       </p>
 
-      <div className="my-8 space-y-5">
+      <div className="my-6 space-y-4 lg:my-8 lg:space-y-5">
+
         <div className="flex items-center justify-between text-zinc-600">
           <span>Subtotal</span>
 
@@ -33,44 +35,56 @@ export default function OrderSummary({ subtotal }) {
             A calcular
           </span>
         </div>
+
       </div>
 
       <div className="rounded-2xl border border-dashed border-zinc-300 bg-zinc-50 p-4">
+
         <p className="mb-3 text-sm font-medium">
           ¿Tenés un cupón?
         </p>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
+
           <Input
             placeholder="Código"
+            className="flex-1"
           />
 
-          <Button variant="secondary">
+          <Button
+            variant="secondary"
+            className="sm:w-auto"
+          >
             Aplicar
           </Button>
+
         </div>
+
       </div>
 
-      <div className="my-8 border-t border-zinc-200" />
+      <div className="my-6 border-t border-zinc-200 lg:my-8" />
 
       <div className="flex items-center justify-between">
+
         <span className="text-lg font-medium">
           Total
         </span>
 
-        <span className="text-4xl font-bold tracking-tight">
+        <span className="text-3xl font-bold tracking-tight lg:text-4xl">
           ${subtotal.toLocaleString("es-AR")}
         </span>
+
       </div>
 
       <Button
-        className="mt-8 w-full py-4 text-lg"
+        className="mt-6 w-full py-4 text-base lg:mt-8 lg:text-lg"
         onClick={() => navigate("/checkout")}
       >
         Finalizar compra
       </Button>
 
       <div className="mt-6 rounded-2xl bg-zinc-50 p-4">
+
         <p className="text-sm text-zinc-600">
           ✓ Pago seguro
         </p>
@@ -82,7 +96,9 @@ export default function OrderSummary({ subtotal }) {
         <p className="mt-2 text-sm text-zinc-600">
           ✓ Envíos a todo el país
         </p>
+
       </div>
+
     </Card>
   );
 }

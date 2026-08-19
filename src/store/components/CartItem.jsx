@@ -7,15 +7,15 @@ export default function CartItem({
   removeFromCart,
 }) {
   return (
-    <article className="group rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <article className="group rounded-2xl border border-zinc-200 bg-white p-4 transition-all duration-300 hover:shadow-lg lg:rounded-3xl lg:p-6">
 
-      <div className="flex flex-col gap-6 md:flex-row">
+      <div className="flex flex-col gap-5 sm:flex-row">
 
-        <div className="overflow-hidden rounded-2xl bg-zinc-100 self-center md:self-start">
+        <div className="overflow-hidden rounded-2xl bg-zinc-100 self-center sm:self-start">
           <img
             src={item.image}
             alt={item.name}
-            className="h-48 w-48 object-cover transition duration-500 group-hover:scale-105 md:h-40 md:w-40"
+            className="h-36 w-36 object-cover transition duration-500 group-hover:scale-105 sm:h-40 sm:w-40"
           />
         </div>
 
@@ -23,11 +23,11 @@ export default function CartItem({
 
           <div>
 
-            <p className="text-xs uppercase tracking-[0.3em] text-zinc-400">
+            <p className="text-xs uppercase tracking-[0.25em] text-zinc-400">
               {item.category}
             </p>
 
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+            <h2 className="mt-2 text-xl font-semibold leading-tight lg:text-2xl">
               {item.name}
             </h2>
 
@@ -35,13 +35,13 @@ export default function CartItem({
               Precio unitario
             </p>
 
-            <p className="text-xl font-bold text-zinc-900">
+            <p className="text-lg font-bold text-zinc-900 lg:text-xl">
               ${item.price.toLocaleString("es-AR")}
             </p>
 
           </div>
 
-          <div className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="mt-6 flex flex-col gap-5 lg:mt-8 lg:flex-row lg:items-end lg:justify-between">
 
             <div className="flex flex-col gap-4">
 
@@ -73,13 +73,13 @@ export default function CartItem({
 
             </div>
 
-            <div className="rounded-2xl bg-zinc-50 px-6 py-4 text-right">
+            <div className="rounded-2xl bg-zinc-50 px-5 py-4 text-left lg:px-6 lg:text-right">
 
               <p className="text-xs uppercase tracking-[0.25em] text-zinc-400">
                 Subtotal
               </p>
 
-              <p className="mt-2 text-3xl font-bold tracking-tight text-zinc-900">
+              <p className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 lg:text-3xl">
                 $
                 {(item.price * item.quantity).toLocaleString("es-AR")}
               </p>

@@ -1,35 +1,58 @@
 import Hero from "./components/Hero";
+import Benefits from "./components/Benefits";
 import Categories from "./components/Categories";
 import FeaturedProducts from "./components/FeaturedProducts";
+import PromoBanner from "./components/PromoBanner";
+import CollectionSection from "./components/CollectionSection";
 import Footer from "./components/Footer";
 
-import { useProducts } from "../context/ProductsContext";
+import { useStore } from "../context/StoreContext";
 
 function StoreHome() {
-  const { products } = useProducts();
+  const { sections, loading } = useStore();
 
-  const featured = [...products]
-    .filter(
-      (product) =>
-        product.visible &&
-        product.featured
-    )
-    .sort(
-      (a, b) =>
-        (a.featured_order ?? 999) -
-        (b.featured_order ?? 999)
-    );
+  const featuredSection = sections.find(
+    (section) => section.slug === "featured"
+  );
+
+  const recommendedSection = sections.find(
+    (section) => section.slug === "recommended"
+  );
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <main className="bg-white">
 
       <Hero />
 
+      <Benefits />
+
       <Categories />
 
-      <FeaturedProducts
-        products={featured}
-      />
+      {featuredSection && (
+        <FeaturedProducts
+          title={featuredSection.title}
+          subtitle={featuredSection.subtitle}
+          products={featuredSection.store_section_products.map(
+            (item) => item.products
+          )}
+        />
+      )}
+
+      <PromoBanner />
+
+      {recommendedSection && (
+        <CollectionSection
+          title={recommendedSection.title}
+          subtitle={recommendedSection.subtitle}
+          products={recommendedSection.store_section_products.map(
+            (item) => item.products
+          )}
+        />
+      )}
 
       <Footer />
 

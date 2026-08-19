@@ -1,13 +1,17 @@
 import { AuthProvider } from "./AuthContext";
 import { ProductsProvider } from "./ProductsContext";
-import { CartProvider } from "./CartContext";
 import { CategoriesProvider } from "./CategoriesContext";
+import { StoreProvider } from "./StoreContext";
+import { StoreSettingsProvider } from "./StoreSettingsContext";
 import { ProvidersProvider } from "./ProvidersContext";
 import { OrdersProvider } from "./OrdersContext";
 import { SalesProvider } from "./SalesContext";
+import { CartProvider } from "./CartContext";
 import { FavoritesProvider } from "./FavoritesContext";
 
-export default function AppProviders({ children }) {
+export default function AppProviders({
+  children,
+}) {
   return (
     <AuthProvider>
 
@@ -15,27 +19,35 @@ export default function AppProviders({ children }) {
 
         <CategoriesProvider>
 
-          <ProvidersProvider>
+          <StoreProvider>
 
-            <OrdersProvider>
+            <StoreSettingsProvider>
 
-              <SalesProvider>
+              <ProvidersProvider>
 
-                  <CartProvider>
+                <OrdersProvider>
 
-                    <FavoritesProvider>
+                  <SalesProvider>
 
-                      {children}
+                    <CartProvider>
 
-                    </FavoritesProvider>
+                      <FavoritesProvider>
 
-                  </CartProvider>
+                        {children}
 
-                </SalesProvider>
+                      </FavoritesProvider>
 
-            </OrdersProvider>
+                    </CartProvider>
 
-          </ProvidersProvider>
+                  </SalesProvider>
+
+                </OrdersProvider>
+
+              </ProvidersProvider>
+
+            </StoreSettingsProvider>
+
+          </StoreProvider>
 
         </CategoriesProvider>
 

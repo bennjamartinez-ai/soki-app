@@ -10,7 +10,6 @@ export default function ProductsPage({
   initialCategory = "all",
 }) {
   const { products, loading } = useProducts();
-
   const { categories } = useCategories();
 
   const [searchParams] = useSearchParams();
@@ -18,19 +17,15 @@ export default function ProductsPage({
   const [search, setSearch] = useState("");
 
   const [selectedCategory, setSelectedCategory] =
-  useState(initialCategory);
+    useState(initialCategory);
 
   useEffect(() => {
-
     const query =
       searchParams.get("search");
 
     if (query) {
-
-      setSearch(query);
-
-    }
-
+  setSearch(query);
+}
   }, [searchParams]);
 
   const visibleCategories = [...categories]
@@ -41,33 +36,24 @@ export default function ProductsPage({
     );
 
   const filteredProducts = useMemo(() => {
-
     return products.filter((product) => {
-
       if (!product.visible) return false;
 
       const matchesCategory =
-
         selectedCategory === "all"
-
           ? true
-
           : product.category_id === selectedCategory;
 
       const matchesSearch =
         product.name
           .toLowerCase()
-          .includes(
-            search.toLowerCase()
-          );
+          .includes(search.toLowerCase());
 
       return (
         matchesCategory &&
         matchesSearch
       );
-
     });
-
   }, [
     products,
     search,
@@ -75,59 +61,31 @@ export default function ProductsPage({
   ]);
 
   if (loading) {
-
     return (
-
-      <main className="mx-auto max-w-7xl px-8 py-20">
-
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-20">
         <p className="text-center text-zinc-500">
-
           Cargando productos...
-
         </p>
-
       </main>
-
     );
-
   }
 
   return (
+    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-20">
 
-    <main className="mx-auto max-w-7xl px-8 py-20">
+      <div className="mb-8">
 
-      <div className="mb-12">
+     <div>
 
-        <h1 className="text-5xl font-bold">
+          <div>
+            <h1 className="text-4xl font-bold lg:text-5xl">
+              Productos
+            </h1>
 
-          Productos
-
-        </h1>
-
-        <p className="mt-3 text-zinc-500">
-
-          Encontrá todos nuestros productos.
-
-        </p>
-
-      </div>
-
-      <div className="mb-10 flex flex-col gap-5 lg:flex-row">
-
-        <input
-          value={search}
-          onChange={(e) =>
-            setSearch(
-              e.target.value
-            )
-          }
-          placeholder="Buscar producto..."
-          className="flex-1 rounded-xl border border-zinc-300 px-5 py-3 outline-none focus:border-black"
-        />
-
-        <div className="rounded-xl border border-zinc-300 px-5 py-3 text-sm text-zinc-500">
-
-          {filteredProducts.length} productos
+            <p className="mt-3 text-zinc-500">
+              Encontrá todos nuestros productos.
+            </p>
+          </div>
 
         </div>
 
@@ -137,32 +95,23 @@ export default function ProductsPage({
 
         <aside>
 
-          <h2 className="mb-6 text-lg font-semibold">
-
-            Categorías
-
-          </h2>
-
-          <div className="space-y-2">
+          <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-2">
 
             <button
               onClick={() =>
                 setSelectedCategory("all")
               }
-              className={`w-full rounded-xl px-4 py-3 text-left transition ${
+              className={`whitespace-nowrap rounded-xl px-4 py-3 text-left transition lg:block lg:w-full ${
                 selectedCategory === "all"
                   ? "bg-black text-white"
                   : "hover:bg-zinc-100"
               }`}
             >
-
               Todas
-
             </button>
 
             {visibleCategories.map(
               (category) => (
-
                 <button
                   key={category.id}
                   onClick={() =>
@@ -170,18 +119,15 @@ export default function ProductsPage({
                       category.id
                     )
                   }
-                  className={`w-full rounded-xl px-4 py-3 text-left transition ${
+                  className={`whitespace-nowrap rounded-xl px-4 py-3 text-left transition lg:block lg:w-full ${
                     selectedCategory ===
                     category.id
                       ? "bg-black text-white"
                       : "hover:bg-zinc-100"
                   }`}
                 >
-
                   {category.name}
-
                 </button>
-
               )
             )}
 
@@ -194,23 +140,19 @@ export default function ProductsPage({
           {filteredProducts.length === 0 ? (
 
             <div className="rounded-3xl border border-zinc-200 bg-zinc-50 py-24 text-center text-zinc-500">
-
               No encontramos productos.
-
             </div>
 
           ) : (
 
-            <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
 
               {filteredProducts.map(
                 (product) => (
-
                   <ProductCard
                     key={product.id}
                     product={product}
                   />
-
                 )
               )}
 
@@ -223,7 +165,5 @@ export default function ProductsPage({
       </div>
 
     </main>
-
   );
-
 }

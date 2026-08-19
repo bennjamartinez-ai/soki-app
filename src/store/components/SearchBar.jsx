@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useProducts } from "../../context/ProductsContext";
 import SearchSuggestions from "./SearchSuggestions";
 
-function SearchBar() {
+export default function SearchBar() {
   const navigate = useNavigate();
   const { products } = useProducts();
 
@@ -18,7 +18,10 @@ function SearchBar() {
 
     if (!text) return;
 
-    navigate(`/productos?search=${encodeURIComponent(text)}`);
+    navigate(
+      `/productos?search=${encodeURIComponent(text)}`
+    );
+
     setSearch("");
   }
 
@@ -27,32 +30,17 @@ function SearchBar() {
   }
 
   return (
-    <div className="border-b border-zinc-200 bg-white">
-      <div className="mx-auto flex h-20 max-w-7xl items-center px-6">
-        <div className="relative flex flex-1 items-center rounded-xl border border-zinc-300 bg-white px-4">
-          <Search
-            size={18}
-            className="text-zinc-400"
-          />
+    <section className="border-b border-zinc-200 bg-white">
 
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={handleEnter}
-            className="h-12 flex-1 bg-transparent px-3 outline-none"
-          />
+      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
 
-          <SearchSuggestions
-            products={products}
-            search={search}
-            onSelect={handleSelect}
-          />
-        </div>
+        <StoreSearch
+  search={search}
+  setSearch={setSearch}
+/>
+
       </div>
-    </div>
+
+    </section>
   );
 }
-
-export default SearchBar;

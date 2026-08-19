@@ -7,12 +7,12 @@ import {
 } from "lucide-react";
 
 import { useCart } from "../../context/CartContext";
-import UserMenu from "./UserMenu";
 import MobileMenu from "./MobileMenu";
+import UserMenu from "./UserMenu";
+import UserMenuMobile from "./UserMenuMobile";
 
 function Navbar() {
   const { cart } = useCart();
-
   const { pathname } = useLocation();
 
   const [mobileMenuOpen, setMobileMenuOpen] =
@@ -30,16 +30,14 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md">
 
-      <div className="mx-auto flex h-20 max-w-[1800px] items-center px-4 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-[1800px] items-center justify-between px-4 lg:px-8">
 
         {/* IZQUIERDA */}
 
-        <div className="flex flex-1 items-center gap-4 lg:gap-8">
+        <div className="flex items-center gap-4 lg:gap-8">
 
           <button
-            onClick={() =>
-              setMobileMenuOpen(true)
-            }
+            onClick={() => setMobileMenuOpen(true)}
             className="rounded-full p-3 transition hover:bg-zinc-100 lg:hidden"
           >
             <Menu size={24} />
@@ -105,52 +103,34 @@ function Navbar() {
 
         {/* DERECHA */}
 
-        <div className="ml-auto flex items-center gap-2 lg:gap-4">
+        <div className="flex items-center gap-1">
 
-          {/* BUSCADOR */}
+          <button className="rounded-full p-3 transition hover:bg-zinc-100">
+            <Search size={22} />
+          </button>
 
-          {pathname === "/" && (
+          {/* Usuario móvil */}
 
-            <div className="hidden items-center rounded-full bg-zinc-100 px-4 lg:flex">
+        <UserMenuMobile />
 
-              <Search
-                size={18}
-                className="text-zinc-500"
-              />
-
-              <input
-                type="text"
-                placeholder="Buscar"
-                className="h-11 w-52 bg-transparent px-3 text-sm outline-none placeholder:text-zinc-500"
-              />
-
-            </div>
-
-          )}
-
-          {/* USUARIO */}
+          {/* Usuario escritorio */}
 
           <div className="hidden lg:block">
             <UserMenu />
           </div>
 
-          {/* CARRITO */}
+          {/* Carrito */}
 
           <Link
             to="/carrito"
             className="relative rounded-full p-3 transition hover:bg-zinc-100"
           >
-
             <ShoppingCart size={22} />
 
             {totalItems > 0 && (
-
               <span className="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-black px-1 text-[11px] font-bold text-white">
-
                 {totalItems}
-
               </span>
-
             )}
 
           </Link>
@@ -161,9 +141,7 @@ function Navbar() {
 
       <MobileMenu
         open={mobileMenuOpen}
-        onClose={() =>
-          setMobileMenuOpen(false)
-        }
+        onClose={() => setMobileMenuOpen(false)}
       />
 
     </header>

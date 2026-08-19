@@ -47,15 +47,15 @@ export default function ProductPurchase({
 
   return (
     <>
-      {/* CANTIDAD */}
+      {/* Cantidad */}
 
       <div className="mt-8">
 
-        <div className="flex h-16 items-center justify-between rounded-full border border-zinc-300 px-2">
+        <div className="flex h-14 items-center justify-between rounded-full border border-zinc-300 px-2 lg:h-16">
 
           <button
             onClick={decrease}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-2xl transition hover:bg-zinc-100"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-2xl transition hover:bg-zinc-100 lg:h-12 lg:w-12"
           >
             −
           </button>
@@ -66,7 +66,7 @@ export default function ProductPurchase({
 
           <button
             onClick={increase}
-            className="flex h-12 w-12 items-center justify-center rounded-full text-2xl transition hover:bg-zinc-100"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-2xl transition hover:bg-zinc-100 lg:h-12 lg:w-12"
           >
             +
           </button>
@@ -75,12 +75,12 @@ export default function ProductPurchase({
 
       </div>
 
-      {/* BOTONES */}
+      {/* Agregar al carrito */}
 
       <button
         disabled={product.stock === 0}
         onClick={handleAdd}
-        className={`mt-8 flex h-16 w-full items-center justify-center rounded-full text-lg font-semibold text-white transition ${
+        className={`mt-6 flex h-14 w-full items-center justify-center rounded-full text-base font-semibold text-white transition lg:mt-8 lg:h-16 lg:text-lg ${
           product.stock === 0
             ? "cursor-not-allowed bg-zinc-400"
             : "bg-black hover:bg-zinc-800 active:scale-[.98]"
@@ -89,16 +89,18 @@ export default function ProductPurchase({
         Agregar al carrito
       </button>
 
+      {/* Favoritos */}
+
       <button
         onClick={handleFavorite}
-        className={`mt-3 flex h-16 w-full items-center justify-center gap-3 rounded-full border text-lg font-medium transition ${
+        className={`mt-3 flex h-14 w-full items-center justify-center gap-3 rounded-full border text-base font-medium transition lg:h-16 lg:text-lg ${
           favorite
             ? "border-red-500 bg-red-50 text-red-600 hover:bg-red-100"
             : "border-zinc-300 hover:border-black"
         }`}
       >
         <Heart
-          size={20}
+          size={18}
           fill={favorite ? "currentColor" : "none"}
         />
 

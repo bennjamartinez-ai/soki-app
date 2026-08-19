@@ -31,6 +31,7 @@ import WholesaleRequests from "./admin/WholesaleRequests";
 
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StoreEditor from "./admin/StoreEditor";
 
 function App() {
   return (
@@ -113,6 +114,10 @@ function App() {
             <Route path="statistics" element={<Statistics />} />
             <Route path="store-orders" element={<StoreOrders />} />
             <Route path="wholesale" element={<WholesaleRequests />} />
+            <Route
+  path="store-editor"
+  element={<StoreEditor />}
+/>
           </Route>
 
         </Routes>

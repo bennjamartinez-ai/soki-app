@@ -59,15 +59,20 @@ export default function AccountProfile() {
 
   return (
     <>
-      <h2 className="text-3xl font-bold">
-        Mi Perfil
-      </h2>
 
-      <p className="mt-3 text-zinc-500">
-        Administrá la información de tu cuenta.
-      </p>
+      <div className="mb-8">
 
-      <div className="mt-10 space-y-6">
+        <h2 className="text-2xl font-bold lg:text-3xl">
+          Mi perfil
+        </h2>
+
+        <p className="mt-2 text-zinc-500">
+          Administrá la información de tu cuenta.
+        </p>
+
+      </div>
+
+      <div className="space-y-6">
 
         <div>
 
@@ -98,18 +103,37 @@ export default function AccountProfile() {
 
         </div>
 
-        <div>
+        <div className="grid gap-6 md:grid-cols-2">
 
-          <label className="mb-2 block text-sm font-medium">
-            Teléfono
-          </label>
+          <div>
 
-          <input
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
-          />
+            <label className="mb-2 block text-sm font-medium">
+              Teléfono
+            </label>
+
+            <input
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
+            />
+
+          </div>
+
+          <div>
+
+            <label className="mb-2 block text-sm font-medium">
+              Ciudad
+            </label>
+
+            <input
+              name="city"
+              value={form.city}
+              onChange={handleChange}
+              className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
+            />
+
+          </div>
 
         </div>
 
@@ -128,53 +152,39 @@ export default function AccountProfile() {
 
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div>
 
-          <div>
+          <label className="mb-2 block text-sm font-medium">
+            Código Postal
+          </label>
 
-            <label className="mb-2 block text-sm font-medium">
-              Ciudad
-            </label>
-
-            <input
-              name="city"
-              value={form.city}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
-            />
-
-          </div>
-
-          <div>
-
-            <label className="mb-2 block text-sm font-medium">
-              Código Postal
-            </label>
-
-            <input
-              name="postal_code"
-              value={form.postal_code}
-              onChange={handleChange}
-              className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
-            />
-
-          </div>
+          <input
+            name="postal_code"
+            value={form.postal_code}
+            onChange={handleChange}
+            className="w-full rounded-xl border border-zinc-300 px-4 py-3 outline-none transition focus:border-black"
+          />
 
         </div>
 
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="rounded-xl bg-black px-8 py-3 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
-        >
+        <div className="flex justify-end border-t border-zinc-200 pt-6">
 
-          {saving
-            ? "Guardando..."
-            : "Guardar cambios"}
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="w-full rounded-xl bg-black px-8 py-3 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+          >
 
-        </button>
+            {saving
+              ? "Guardando..."
+              : "Guardar cambios"}
+
+          </button>
+
+        </div>
 
       </div>
+
     </>
   );
 }

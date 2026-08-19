@@ -7,6 +7,7 @@ import {
   BarChart3,
   Settings,
   Users,
+  Store,
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
@@ -64,6 +65,18 @@ const menu = [
       },
     ],
   },
+
+  {
+  section: "TIENDA",
+  items: [
+    {
+      name: "Editor",
+      path: "/admin/store-editor",
+      icon: Store,
+    },
+  ],
+},
+
   {
     section: "CRM",
     items: [
