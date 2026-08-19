@@ -45,17 +45,35 @@ function App() {
 
             <Route index element={<StoreHome />} />
 
-            <Route path="productos" element={<ProductsPage />} />
+            <Route
+              path="productos"
+              element={<ProductsPage />}
+            />
 
-            <Route path="categoria/:slug" element={<CategoryPage />} />
+            <Route
+              path="categoria/:slug"
+              element={<CategoryPage />}
+            />
 
-            <Route path="producto/:id" element={<ProductPage />} />
+            <Route
+              path="producto/:id"
+              element={<ProductPage />}
+            />
 
-            <Route path="nosotros" element={<AboutPage />} />
+            <Route
+              path="nosotros"
+              element={<AboutPage />}
+            />
 
-            <Route path="contacto" element={<ContactPage />} />
+            <Route
+              path="contacto"
+              element={<ContactPage />}
+            />
 
-            <Route path="carrito" element={<CartPage />} />
+            <Route
+              path="carrito"
+              element={<CartPage />}
+            />
 
             <Route
               path="checkout"
@@ -89,9 +107,22 @@ function App() {
               }
             />
 
-            <Route path="login" element={<LoginPage />} />
+            {/* AUTENTICACIÓN */}
 
-            <Route path="faq" element={<FaqPage />} />
+            <Route
+              path="login"
+              element={<LoginPage />}
+            />
+
+            <Route
+              path="registro"
+              element={<LoginPage />}
+            />
+
+            <Route
+              path="faq"
+              element={<FaqPage />}
+            />
 
           </Route>
 
@@ -105,19 +136,55 @@ function App() {
               </AdminRoute>
             }
           >
-            <Route index element={<Dashboard />} />
-            <Route path="products" element={<Products />} />
-            <Route path="orders" element={<NewSale />} />
-            <Route path="providers" element={<Providers />} />
-            <Route path="purchases" element={<Purchases />} />
-            <Route path="sales" element={<Sales />} />
-            <Route path="statistics" element={<Statistics />} />
-            <Route path="store-orders" element={<StoreOrders />} />
-            <Route path="wholesale" element={<WholesaleRequests />} />
             <Route
-  path="store-editor"
-  element={<StoreEditor />}
-/>
+              index
+              element={<Dashboard />}
+            />
+
+            <Route
+              path="products"
+              element={<Products />}
+            />
+
+            <Route
+              path="orders"
+              element={<NewSale />}
+            />
+
+            <Route
+              path="providers"
+              element={<Providers />}
+            />
+
+            <Route
+              path="purchases"
+              element={<Purchases />}
+            />
+
+            <Route
+              path="sales"
+              element={<Sales />}
+            />
+
+            <Route
+              path="statistics"
+              element={<Statistics />}
+            />
+
+            <Route
+              path="store-orders"
+              element={<StoreOrders />}
+            />
+
+            <Route
+              path="wholesale"
+              element={<WholesaleRequests />}
+            />
+
+            <Route
+              path="store-editor"
+              element={<StoreEditor />}
+            />
           </Route>
 
         </Routes>

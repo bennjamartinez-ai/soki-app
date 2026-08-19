@@ -1,9 +1,15 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import {
   Menu,
   Search,
   ShoppingCart,
+  X,
 } from "lucide-react";
 
 import { useCart } from "../../context/CartContext";
@@ -14,17 +20,42 @@ import UserMenuMobile from "./UserMenuMobile";
 function Navbar() {
   const { cart } = useCart();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] =
     useState(false);
 
+  const [searchOpen, setSearchOpen] =
+    useState(false);
+
+  const [search, setSearch] =
+    useState("");
+
   const totalItems = cart.reduce(
-    (total, item) => total + item.quantity,
+    (total, item) =>
+      total + item.quantity,
     0
   );
 
   function isActive(path) {
     return pathname === path;
+  }
+
+  function handleSearch(e) {
+    e.preventDefault();
+
+    const query = search.trim();
+
+    if (!query) {
+      navigate("/productos");
+      return;
+    }
+
+    navigate(
+      `/productos?search=${encodeURIComponent(query)}`
+    );
+
+    setSearchOpen(false);
   }
 
   return (
@@ -37,8 +68,11 @@ function Navbar() {
         <div className="flex items-center gap-4 lg:gap-8">
 
           <button
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() =>
+              setMobileMenuOpen(true)
+            }
             className="rounded-full p-3 transition hover:bg-zinc-100 lg:hidden"
+            aria-label="Abrir menú"
           >
             <Menu size={24} />
           </button>
@@ -105,25 +139,75 @@ function Navbar() {
 
         <div className="flex items-center gap-1">
 
-          <button className="rounded-full p-3 transition hover:bg-zinc-100">
-            <Search size={22} />
-          </button>
+          {/* BUSCADOR */}
 
-          {/* Usuario móvil */}
+          <div className="relative">
 
-        <UserMenuMobile />
+            {searchOpen && (
+              <form
+                onSubmit={handleSearch}
+                className="absolute right-0 top-full mt-3 flex w-72 items-center rounded-2xl border border-zinc-200 bg-white p-2 shadow-xl lg:w-80"
+              >
 
-          {/* Usuario escritorio */}
+                <Search
+                  size={20}
+                  className="ml-2 text-zinc-400"
+                />
+
+                <input
+                  autoFocus
+                  type="text"
+                  value={search}
+                  onChange={(e) =>
+                    setSearch(e.target.value)
+                  }
+                  placeholder="Buscar productos..."
+                  className="min-w-0 flex-1 bg-transparent px-3 py-2 outline-none"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setSearchOpen(false);
+                  }}
+                  className="rounded-full p-2 text-zinc-400 transition hover:bg-zinc-100 hover:text-black"
+                  aria-label="Cerrar búsqueda"
+                >
+                  <X size={18} />
+                </button>
+
+              </form>
+            )}
+
+            <button
+              onClick={() =>
+                setSearchOpen(!searchOpen)
+              }
+              className="rounded-full p-3 transition hover:bg-zinc-100"
+              aria-label="Buscar productos"
+            >
+              <Search size={22} />
+            </button>
+
+          </div>
+
+          {/* USUARIO MÓVIL */}
+
+          <UserMenuMobile />
+
+          {/* USUARIO ESCRITORIO */}
 
           <div className="hidden lg:block">
             <UserMenu />
           </div>
 
-          {/* Carrito */}
+          {/* CARRITO */}
 
           <Link
             to="/carrito"
             className="relative rounded-full p-3 transition hover:bg-zinc-100"
+            aria-label="Carrito"
           >
             <ShoppingCart size={22} />
 
@@ -141,7 +225,9 @@ function Navbar() {
 
       <MobileMenu
         open={mobileMenuOpen}
-        onClose={() => setMobileMenuOpen(false)}
+        onClose={() =>
+          setMobileMenuOpen(false)
+        }
       />
 
     </header>

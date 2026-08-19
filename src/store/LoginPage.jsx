@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Navigate,
+  useSearchParams,
+} from "react-router-dom";
 import { User } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
-
   const {
     user,
     login,
@@ -13,17 +15,16 @@ export default function LoginPage() {
     loading,
   } = useAuth();
 
+  const [searchParams, setSearchParams] =
+    useSearchParams();
+
   const [isRegister, setIsRegister] =
     useState(false);
 
   const [form, setForm] = useState({
-
     full_name: "",
-
     email: "",
-
     password: "",
-
   });
 
   const [submitting, setSubmitting] =
@@ -35,113 +36,129 @@ export default function LoginPage() {
   const [success, setSuccess] =
     useState("");
 
-  function handleChange(e) {
+  /* ==========================
+     DETECTAR REGISTRO
+  ========================== */
 
-    setForm((prev) => ({
+  useEffect(() => {
+    setIsRegister(
+      searchParams.get("registro") === "true"
+    );
+  }, [searchParams]);
 
-      ...prev,
+  /* ==========================
+     CAMBIAR FORMULARIO
+  ========================== */
 
-      [e.target.name]:
-        e.target.value,
+  function toggleRegister() {
+    const next = !isRegister;
 
-    }));
+    setIsRegister(next);
 
+    setError("");
+    setSuccess("");
+
+    if (next) {
+      setSearchParams({
+        registro: "true",
+      });
+    } else {
+      setSearchParams({});
+    }
   }
 
-  async function handleSubmit(e) {
+  /* ==========================
+     CAMBIAR CAMPOS
+  ========================== */
 
+  function handleChange(e) {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  }
+
+  /* ==========================
+     ENVIAR
+  ========================== */
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
     setError("");
-
     setSuccess("");
 
     try {
-
       setSubmitting(true);
 
       if (isRegister) {
-
         await register({
-
           full_name: form.full_name,
-
           email: form.email,
-
           password: form.password,
-
         });
 
         setSuccess(
           "Cuenta creada correctamente. Revisá tu correo para confirmar el registro."
         );
-
       } else {
-
         await login(
-
           form.email,
-
           form.password
-
         );
-
       }
-
     } catch (err) {
-
       setError(
-
         err.message ??
-
-        "Ocurrió un error."
-
+          "Ocurrió un error."
       );
-
     } finally {
-
       setSubmitting(false);
-
     }
-
   }
 
+  /* ==========================
+     USUARIO YA LOGUEADO
+  ========================== */
+
   if (!loading && user) {
-
-    return <Navigate to="/" replace />;
-
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
   }
 
   return (
-
     <section className="mx-auto flex min-h-[80vh] max-w-3xl items-center justify-center px-6">
 
       <div className="w-full rounded-[40px] bg-white p-12 shadow-sm">
 
-        <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-soki-surface">
+        {/* ICONO */}
 
+        <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-soki-surface">
           <User
             size={36}
             className="text-soki-dark"
           />
-
         </div>
 
-        <h1 className="text-center font-display text-5xl text-soki-dark">
+        {/* TÍTULO */}
 
+        <h1 className="text-center font-display text-5xl text-soki-dark">
           {isRegister
             ? "Crear cuenta"
             : "Iniciar sesión"}
-
         </h1>
 
         <p className="mt-4 text-center text-soki-muted">
-
           {isRegister
             ? "Registrate para comenzar a comprar."
             : "Ingresá con tu cuenta Soki."}
-
         </p>
+
+        {/* FORMULARIO */}
 
         <form
           onSubmit={handleSubmit}
@@ -149,129 +166,83 @@ export default function LoginPage() {
         >
 
           {isRegister && (
-
             <input
-
               name="full_name"
-
               value={form.full_name}
-
               onChange={handleChange}
-
               placeholder="Nombre completo"
-
+              required
               className="w-full rounded-2xl border border-soki-border px-6 py-4 outline-none focus:border-soki-dark"
-
             />
-
           )}
 
           <input
-
             type="email"
-
             name="email"
-
             value={form.email}
-
             onChange={handleChange}
-
             placeholder="Correo electrónico"
-
+            required
             className="w-full rounded-2xl border border-soki-border px-6 py-4 outline-none focus:border-soki-dark"
-
           />
 
           <input
-
             type="password"
-
             name="password"
-
             value={form.password}
-
             onChange={handleChange}
-
             placeholder="Contraseña"
-
+            required
+            minLength={6}
             className="w-full rounded-2xl border border-soki-border px-6 py-4 outline-none focus:border-soki-dark"
-
           />
+
+          {/* ERROR */}
 
           {error && (
-
             <div className="rounded-2xl bg-red-50 p-4 text-red-600">
-
               {error}
-
             </div>
-
           )}
+
+          {/* ÉXITO */}
 
           {success && (
-
             <div className="rounded-2xl bg-green-50 p-4 text-green-700">
-
               {success}
-
             </div>
-
           )}
 
+          {/* BOTÓN */}
+
           <button
-
+            type="submit"
             disabled={submitting}
-
             className="w-full rounded-full bg-soki-dark py-4 font-semibold text-white transition hover:bg-black disabled:opacity-60"
-
           >
-
             {submitting
-
               ? "Procesando..."
-
               : isRegister
-
               ? "Crear cuenta"
-
               : "Ingresar"}
-
           </button>
 
         </form>
 
+        {/* CAMBIAR ENTRE LOGIN / REGISTRO */}
+
         <button
-
-          onClick={() => {
-
-            setIsRegister(
-
-              !isRegister
-
-            );
-
-            setError("");
-
-            setSuccess("");
-
-          }}
-
+          type="button"
+          onClick={toggleRegister}
           className="mt-8 w-full text-center font-semibold text-soki-brown hover:underline"
-
         >
-
           {isRegister
-
             ? "¿Ya tenés una cuenta? Iniciá sesión"
-
-            : "¿No tenés cuenta? Registrate"}
-
+            : "¿No tenés cuenta? Creá tu cuenta"}
         </button>
 
       </div>
 
     </section>
-
   );
-
 }
