@@ -25,6 +25,7 @@ const menu = [
       },
     ],
   },
+
   {
     section: "VENTAS",
     items: [
@@ -45,6 +46,7 @@ const menu = [
       },
     ],
   },
+
   {
     section: "INVENTARIO",
     items: [
@@ -67,15 +69,15 @@ const menu = [
   },
 
   {
-  section: "TIENDA",
-  items: [
-    {
-      name: "Editor",
-      path: "/admin/store-editor",
-      icon: Store,
-    },
-  ],
-},
+    section: "TIENDA",
+    items: [
+      {
+        name: "Editor",
+        path: "/admin/store-editor",
+        icon: Store,
+      },
+    ],
+  },
 
   {
     section: "CRM",
@@ -87,6 +89,7 @@ const menu = [
       },
     ],
   },
+
   {
     section: "ANÁLISIS",
     items: [
@@ -97,6 +100,7 @@ const menu = [
       },
     ],
   },
+
   {
     section: "SISTEMA",
     items: [
@@ -153,7 +157,6 @@ function Sidebar({
       <div className="flex-1 overflow-y-auto px-3 py-5">
 
         {menu.map((group) => (
-
           <div
             key={group.section}
             className="mb-8"
@@ -167,7 +170,6 @@ function Sidebar({
             <div className="space-y-2">
 
               {group.items.map((item) => {
-
                 const Icon = item.icon;
 
                 return (
@@ -193,21 +195,19 @@ function Sidebar({
                     />
 
                     {!collapsed && (
-                      <span>{item.name}</span>
+                      <span>
+                        {item.name}
+                      </span>
                     )}
                   </NavLink>
                 );
-
               })}
 
             </div>
-
           </div>
-
         ))}
 
       </div>
-
     </aside>
   );
 }

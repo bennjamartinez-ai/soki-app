@@ -1,5 +1,5 @@
-import Card from "../../../components/ui/Card";
-import Input from "../../../components/ui/Input";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
 
 export default function CustomerForm({
   customer,

@@ -10,11 +10,8 @@ import { supabase } from "../lib/supabase";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-
   const [user, setUser] = useState(null);
-
   const [profile, setProfile] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   /* ==========================
@@ -22,79 +19,75 @@ export function AuthProvider({ children }) {
   ========================== */
 
   async function loadProfile(userId) {
-
-    const { data, error } = await supabase
+    const {
+      data,
+      error,
+    } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", userId)
       .single();
 
     if (error) {
-
       console.error(error);
-
       return;
-
     }
 
     setProfile(data);
-
   }
 
+  /* ==========================
+     ACTUALIZAR PERFIL
+  ========================== */
+
   async function updateProfile(profileData) {
+    if (!user) return;
 
-  if (!user) return;
+    const {
+      data,
+      error,
+    } = await supabase
+      .from("profiles")
+      .update(profileData)
+      .eq("id", user.id)
+      .select()
+      .single();
 
-  const { data, error } = await supabase
-    .from("profiles")
-    .update(profileData)
-    .eq("id", user.id)
-    .select()
-    .single();
+    if (error) throw error;
 
-  if (error) throw error;
+    setProfile(data);
 
-  setProfile(data);
-
-  return data;
-
-}
+    return data;
+  }
 
   /* ==========================
      REGISTRO
   ========================== */
 
   async function register({
-
     email,
-
     password,
-
     full_name,
-
   }) {
+    const redirectUrl =
+      `${window.location.origin}/`;
 
-    const { error } =
-      await supabase.auth.signUp({
+    const {
+      error,
+    } = await supabase.auth.signUp({
+      email,
+      password,
 
-        email,
+      options: {
+        emailRedirectTo: redirectUrl,
 
-        password,
-
-        options: {
-
-          data: {
-
-            full_name,
-
-          },
-
+        data: {
+          full_name,
         },
-
-      });
+      },
+    });
 
     if (error) throw error;
-
   }
 
   /* ==========================
@@ -102,24 +95,17 @@ export function AuthProvider({ children }) {
   ========================== */
 
   async function login(
-
     email,
-
     password
-
   ) {
-
-    const { error } =
-      await supabase.auth.signInWithPassword({
-
-        email,
-
-        password,
-
-      });
+    const {
+      error,
+    } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) throw error;
-
   }
 
   /* ==========================
@@ -127,9 +113,7 @@ export function AuthProvider({ children }) {
   ========================== */
 
   async function logout() {
-
     await supabase.auth.signOut();
-
   }
 
   /* ==========================
@@ -137,130 +121,80 @@ export function AuthProvider({ children }) {
   ========================== */
 
   useEffect(() => {
-
     async function initialize() {
-
       const {
-
         data: {
-
           session,
-
         },
-
       } =
         await supabase.auth.getSession();
 
       if (session?.user) {
-
         setUser(session.user);
 
         await loadProfile(
-
           session.user.id
-
         );
-
       }
 
       setLoading(false);
-
     }
 
     initialize();
 
     const {
-
       data: listener,
-
     } =
       supabase.auth.onAuthStateChange(
-
         async (
-
-          _,
-
+          _event,
           session
-
         ) => {
-
           if (session?.user) {
-
-            setUser(
-
-              session.user
-
-            );
+            setUser(session.user);
 
             await loadProfile(
-
               session.user.id
-
             );
-
           } else {
-
             setUser(null);
-
             setProfile(null);
-
           }
-
         }
-
       );
 
     return () =>
-
       listener.subscription.unsubscribe();
-
   }, []);
 
   return (
-
     <AuthContext.Provider
-  value={{
+      value={{
+        user,
+        profile,
+        loading,
+        login,
+        logout,
+        register,
+        updateProfile,
 
-  user,
+        isAdmin:
+          profile?.role === "admin",
 
-  profile,
+        isWholesale:
+          profile?.role === "wholesale",
 
-  loading,
-
-  login,
-
-  logout,
-
-  register,
-
-  updateProfile,
-
-  isAdmin:
-    profile?.role === "admin",
-
-  isWholesale:
-    profile?.role === "wholesale",
-
-  isCustomer:
-    profile?.role === "customer",
-
-}}
->
-
+        isCustomer:
+          profile?.role === "customer",
+      }}
+    >
       {children}
-
     </AuthContext.Provider>
-
   );
-
 }
 
 export function useAuth() {
-
   return useContext(
-
     AuthContext
-
   );
-
 }
